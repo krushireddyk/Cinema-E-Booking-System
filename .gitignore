@@ -39,5 +39,4 @@ build/
 *.ear
 *.zip
 *.tar.gz
-*.rar
-.mvn
+*.ra
