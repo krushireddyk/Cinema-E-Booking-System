@@ -1,8 +1,9 @@
-/*package com.cinemaeBooking.configuration;
+package com.cinemaeBooking.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,8 +21,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 	//@Autowired
 	//private CustomerServiceIMPL customerService;
 	
-	@Autowired
-	private UserAuthenticationHandler userAuthenticationHandler;
+	//@Autowired
+	//private UserAuthenticationHandler userAuthenticationHandler;
 	
 	@Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() 
@@ -32,19 +33,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 	@Override
     protected void configure(HttpSecurity http) throws Exception 
     {
-        http.csrf().disable()
+        http.csrf().disable().authorizeRequests()
+        .antMatchers("/").permitAll()
+        .antMatchers(HttpMethod.GET,"/signin").permitAll()
+        .antMatchers(HttpMethod.GET, "/signup").permitAll()
+        .antMatchers(HttpMethod.GET,"/getProfile/*").permitAll()
+        .antMatchers(HttpMethod.GET,"/signupconfirm").permitAll()
+         .antMatchers(HttpMethod.GET,"/orderconfirmation").permitAll()
+        .anyRequest().authenticated();
+        /*http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/signin", "/signup","/signupconfirm","/orderconfirmation").permitAll()
+                .antMatchers("/", "/signin", "/signup","/signupconfirm","/orderconfirmation", "/getProfile").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/signin").permitAll()
-                .successHandler(userAuthenticationHandler)
+                //.successHandler(userAuthenticationHandler)
                 .and()
                 .logout().invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/signout"))
-                .logoutSuccessUrl("/signout-success").permitAll();
+                .logoutSuccessUrl("/signout-success").permitAll();*/
     }
 
 	@Override
@@ -52,4 +61,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     {
         //auth.userDetailsService(customerService).passwordEncoder(bCryptPasswordEncoder());
     }
-}*/
+}

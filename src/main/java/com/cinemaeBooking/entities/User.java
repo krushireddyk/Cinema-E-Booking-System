@@ -11,41 +11,40 @@ import javax.persistence.*;
 public class User 
 {
 	@Id
-	private long userID;
-    private String role;
+	private Integer userID;
     private String firstName;
     private String lastName;
     private String userName;
     private String password;
-    private String confirmPassword = "";
-    private String email;
+    private String emailID;
     private String phoneNumber;
-    private boolean enabled;
-    private String street;
-    private String city;
-    private String state;
-    private String zipCode;
-    private String optPromotionalEmails = "false";
-    private String userStatus = "INACTIVE";
-    private String verificationCode;
-    
-    @OneToMany
-    private Set<PayCard> payCards = new HashSet<>();
+    //private boolean enabled;
+    //private String optPromotionalEmails = "false";
+    //private String verificationCode;
+
+	//@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user")
+    private Set<PaymentCard> paymentCards;
     
     //@OneToMany
     //private Set<Order> orders = new HashSet<>();
+
+	@OneToMany(mappedBy = "user")
+	private Set<HomeAddress> addresses = new HashSet<>();
+
+	@OneToOne
+	@JoinColumn(name = "roleID")
+	private UserType usertype;
+
+	@OneToOne
+	@JoinColumn(name = "statusID")
+	private Status status;
     
-	public long getUserID() {
+	public Integer getUserID() {
 		return userID;
 	}
-	public void setUserID(long userID) {
+	public void setUserID(Integer userID) {
 		this.userID = userID;
-	}
-	public String getRole() {
-		return role;
-	}
-	public void setRole(String role) {
-		this.role = role;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -71,73 +70,75 @@ public class User
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getConfirmPassword() {
-		return confirmPassword;
+
+	public String getEmailID() {
+		return this.emailID;
 	}
-	public void setConfirmPassword(String confirmPassword) {
-		this.confirmPassword = confirmPassword;
+
+	public void setEmailID(String emailID) {
+		this.emailID = emailID;
 	}
-	public String getEmail() {
-		return email;
+
+	/*public boolean getEnabled() {
+		return this.enabled;
+	}*/
+
+	public Set<PaymentCard> getPaymentCards() {
+		return this.paymentCards;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+
+	public void setPaymentCards(Set<PaymentCard> paymentCards) {
+		this.paymentCards = paymentCards;
 	}
+
+	public Set<HomeAddress> getAddresses() {
+		return this.addresses;
+	}
+
+	public void setAddresses(Set<HomeAddress> addresses) {
+		this.addresses = addresses;
+	}
+
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	public boolean isEnabled() {
+	/*public boolean isEnabled() {
 		return enabled;
 	}
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
-	}
-	public String getStreet() {
-		return street;
-	}
-	public void setStreet(String street) {
-		this.street = street;
-	}
-	public String getCity() {
-		return city;
-	}
-	public void setCity(String city) {
-		this.city = city;
-	}
-	public String getState() {
-		return state;
-	}
-	public void setState(String state) {
-		this.state = state;
-	}
-	public String getZipCode() {
-		return zipCode;
-	}
-	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
-	}
-	public String getOptPromotionalEmails() {
+	}*/
+	/*public String getOptPromotionalEmails() {
 		return optPromotionalEmails;
 	}
 	public void setOptPromotionalEmails(String optPromotionalEmails) {
 		this.optPromotionalEmails = optPromotionalEmails;
-	}
-	public String getUserStatus() {
-		return userStatus;
-	}
-	public void setUserStatus(String userStatus) {
-		this.userStatus = userStatus;
-	}
-	public String getVerificationCode() {
+	}*/
+
+	/*public String getVerificationCode() {
 		return verificationCode;
 	}
 	public void setVerificationCode(String verificationCode) {
 		this.verificationCode = verificationCode;
+	}*/
+
+	public UserType getUsertype() {
+		return this.usertype;
 	}
-    
-    
+
+	public void setUsertype(UserType usertype) {
+		this.usertype = usertype;
+	}
+
+	public Status getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 
 }
