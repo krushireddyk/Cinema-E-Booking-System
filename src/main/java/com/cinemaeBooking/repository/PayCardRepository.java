@@ -1,4 +1,4 @@
-package com.cinemaeBooking.repository;
+/*package com.cinemaeBooking.repository;
 
 import java.util.Collection;
 
@@ -15,3 +15,4 @@ public interface PayCardRepository extends CrudRepository<PayCard, Long> {
 	Collection<PayCard> finAllByUser(User user);
 
 }
+*/

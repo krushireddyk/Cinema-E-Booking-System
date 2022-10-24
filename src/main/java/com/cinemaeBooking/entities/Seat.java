@@ -1,5 +1,5 @@
-package com.cinemaeBooking.entities;
+/*package com.cinemaeBooking.entities;
 
 public class Seat {
 
-}
+}*/

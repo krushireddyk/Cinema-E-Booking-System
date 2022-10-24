@@ -9,25 +9,25 @@ public class Customer
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "UserID", unique = true)
+	@Column(name = "userID", unique = true)
 	private int userID;
 	
-	@Column(name = "FirstName")
+	@Column(name = "firstName")
 	private String firstName;
 	
-	@Column(name = "LastName")
+	@Column(name = "lastName")
 	private String lastName;
 	
-	@Column(name = "PhoneNumber")
+	@Column(name = "phoneNumber")
 	private String phoneNumber;
 	
 	@Column(name = "userName")
     private String userName;
 	
-	@Column(name = "EmailID")
+	@Column(name = "emailId")
 	private String email;
 	
-	@Column(name = "Password")
+	@Column(name = "password")
 	private String password;
 	
 	@Transient
@@ -36,10 +36,10 @@ public class Customer
 	@Column(name="role")
 	private String role;
 	
-	@Column(name = "StatusID")
+	@Column(name = "statusID")
 	private String accountStatus;
 	
-	@Column(name = "Paymentcard")
+	@Column(name = "paymentcard")
 	private String paymentCard;
 	
 	@Transient

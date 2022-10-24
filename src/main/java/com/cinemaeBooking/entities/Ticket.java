@@ -11,8 +11,8 @@ public class Ticket
 	@Id
 	private long ticket_id;
 	private TicketType age = TicketType.ADULT;
-	private Seat seat;
-	private Order order;
+	//private Seat seat;
+	//private Order order;
 	
 	public long getTicket_id() {
 		return ticket_id;
@@ -26,17 +26,17 @@ public class Ticket
 	public void setAge(TicketType age) {
 		this.age = age;
 	}
-	public Seat getSeat() {
+	/*public Seat getSeat() {
 		return seat;
 	}
 	public void setSeat(Seat seat) {
 		this.seat = seat;
-	}
-	public Order getOrder() {
+	}*/
+	/*public Order getOrder() {
 		return order;
 	}
 	public void setOrder(Order order) {
 		this.order = order;
-	}
+	}*/
 	
 }

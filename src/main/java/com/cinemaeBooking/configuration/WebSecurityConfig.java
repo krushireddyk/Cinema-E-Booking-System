@@ -1,4 +1,4 @@
-package com.cinemaeBooking.configuration;
+/*package com.cinemaeBooking.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,15 +10,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.cinemaeBooking.serviceIMPL.CustomerServiceIMPL;
+//import com.cinemaeBooking.serviceIMPL.CustomerServiceIMPL;
 
 @SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
-	@Autowired
-	private CustomerServiceIMPL customerService;
+	//@Autowired
+	//private CustomerServiceIMPL customerService;
 	
 	@Autowired
 	private UserAuthenticationHandler userAuthenticationHandler;
@@ -50,6 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 	@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception 
     {
-        auth.userDetailsService(customerService).passwordEncoder(bCryptPasswordEncoder());
+        //auth.userDetailsService(customerService).passwordEncoder(bCryptPasswordEncoder());
     }
-}
+}*/

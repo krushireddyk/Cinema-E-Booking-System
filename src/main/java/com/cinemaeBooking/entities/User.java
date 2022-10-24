@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class User 
 {
 	@Id
-	private long user_id;
+	private long userID;
     private String role;
     private String firstName;
     private String lastName;
@@ -32,14 +32,14 @@ public class User
     @OneToMany
     private Set<PayCard> payCards = new HashSet<>();
     
-    @OneToMany
-    private Set<Order> orders = new HashSet<>();
+    //@OneToMany
+    //private Set<Order> orders = new HashSet<>();
     
-	public long getUser_id() {
-		return user_id;
+	public long getUserID() {
+		return userID;
 	}
-	public void setUser_id(long user_id) {
-		this.user_id = user_id;
+	public void setUserID(long userID) {
+		this.userID = userID;
 	}
 	public String getRole() {
 		return role;

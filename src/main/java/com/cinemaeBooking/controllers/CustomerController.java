@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.cinemaeBooking.entities.Customer;
 import com.cinemaeBooking.service.CustomerService;
-import com.cinemaeBooking.serviceIMPL.EmailService;
+//import com.cinemaeBooking.serviceIMPL.EmailService;
 
 public class CustomerController {
 
 	@Autowired
 	private CustomerService customerService;
 	
-	@Autowired
-	private EmailService emailService;
+	//@Autowired
+	//private EmailService emailService;
 	
 	@GetMapping("/signin")
     public String showLogin() 
@@ -56,7 +56,7 @@ public class CustomerController {
 			customer.setState(userForm.getState());
 			customer.setZipcode(userForm.getZipcode());
 			customerService.save(customer);
-			emailService.sendVerificationEmail(userForm.getEmail(),userForm.getFirstName());
+			//emailService.sendVerificationEmail(userForm.getEmail(),userForm.getFirstName());
 			return "redirect:/signupconfirm";
 		}
 	}

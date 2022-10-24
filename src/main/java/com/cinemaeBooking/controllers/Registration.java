@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.cinemaeBooking.entities.User;
-import com.cinemaeBooking.repository.PayCardRepository;
+//import com.cinemaeBooking.repository.PayCardRepository;
 import com.cinemaeBooking.repository.UserRepository;
 
 public class Registration {
@@ -32,8 +32,8 @@ public class Registration {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@Autowired
-	private PayCardRepository payCardRepository;
+	//@Autowired
+	//private PayCardRepository payCardRepository;
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;

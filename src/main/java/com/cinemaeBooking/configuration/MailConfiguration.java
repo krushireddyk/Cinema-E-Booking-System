@@ -1,4 +1,4 @@
-package com.cinemaeBooking.configuration;
+/*package com.cinemaeBooking.configuration;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -15,4 +15,4 @@ public class MailConfiguration {
 		return ms;
 	}
 
-}
+}*/

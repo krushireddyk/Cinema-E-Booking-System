@@ -31,7 +31,7 @@ public class CustomerServiceIMPL implements CustomerService,UserDetailsService
 	@Override
 	public Customer findByUserId(int userID) 
 	{
-		return customerRepository.findByUserId(userID);
+		return customerRepository.findByUserID(userID);
 	}
 
 	@Override
