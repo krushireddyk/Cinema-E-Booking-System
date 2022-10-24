@@ -47,7 +47,7 @@ public class ForgotPassword {
         return "forgotpassword";
     }
 	
-	@RequestMapping(value = "/forgotpassword", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/forgotpassword", method = RequestMethod.POST)
 	public Object submit(@ModelAttribute("email") String forgotEmail, BindingResult bindingResult) throws IOException, MessagingException
 	{
 		if (bindingResult.hasErrors()) 
@@ -55,7 +55,7 @@ public class ForgotPassword {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        User user = userRepository.findByEmail(forgotEmail);
+        /*User user = userRepository.findByEmail(forgotEmail);
         if(user != null) 
         {
             String tempPassword = generateRandomPassword();
@@ -68,7 +68,7 @@ public class ForgotPassword {
         {
             return "redirect:/forgotpassword?error";
         }
-	}
+	}*/
 	
 	private String generateRandomPassword()
 	{

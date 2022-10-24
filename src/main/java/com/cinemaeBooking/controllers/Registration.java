@@ -63,10 +63,10 @@ public class Registration {
         return "registrationconfirmation";
     }
 	
-	@RequestMapping(value = "/registrationconfirmation", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/registrationconfirmation", method = RequestMethod.POST)
 	public Object submitConfirmationCode(@ModelAttribute("registrationconfirmation") User userForm, Model model)
 	{
-		User userInstance = userRepository.findByVerificationCode(userForm.getVerificationCode());
+		/*User userInstance = userRepository.findByVerificationCode(userForm.getVerificationCode());
         if (userInstance == null || !(userInstance.getVerificationCode().matches(userForm.getVerificationCode()))) 
         {
             System.out.println("Incorrect Verification Code");
@@ -83,7 +83,7 @@ public class Registration {
         }
         
         return "redirect:/registrationconfirmation";
-	}
+	}*/
 	
 	protected String getSaltString() 
 	{
