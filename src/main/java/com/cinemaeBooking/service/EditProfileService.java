@@ -1,5 +1,6 @@
 package com.cinemaeBooking.service;
 
+import com.cinemaeBooking.entities.BillingAddress;
 import com.cinemaeBooking.entities.HomeAddress;
 import com.cinemaeBooking.entities.PaymentCard;
 import com.cinemaeBooking.entities.Status;
@@ -34,6 +35,15 @@ public class EditProfileService {
             Set<PaymentCard> newPaymentCards = updatedUser.getPaymentCards();
             Set<PaymentCard> paymentCards = user.getPaymentCards();
             for(PaymentCard paymentCard : newPaymentCards) {
+                if(paymentCard.getAddress() != null) {
+                    System.out.println(paymentCard.getAddress().getCity());
+                    System.out.println(paymentCard.getAddress().getState());
+                    System.out.println(paymentCard.getAddress().getStreet());
+                    System.out.println(paymentCard.getAddress().getZipCode());
+                    BillingAddress billingAddress = paymentCard.getAddress();
+                    billingAddress.setPaymentCard(paymentCard);
+                    paymentCard.setAddress(billingAddress);
+                }
                 paymentCard.setUser(user);
                 paymentCards.add(paymentCard);
             }

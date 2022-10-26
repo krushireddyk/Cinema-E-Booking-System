@@ -37,7 +37,7 @@ public class User
 	@JoinColumn(name = "roleID")
 	private UserType usertype;
 
-	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@OneToOne
 	@JoinColumn(name = "statusID")
 	private Status status;
     

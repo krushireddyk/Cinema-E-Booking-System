@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -24,6 +25,12 @@ public class PaymentCard
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userID", referencedColumnName = "userID")
     private User user;
+
+	//@OneToOne
+	//@JoinColumn(name = "PaymentID", referenceColumnName = "PaymentID")
+	@OneToOne(mappedBy = "paymentCard", cascade = CascadeType.ALL)
+	private BillingAddress address;
+
 	public Integer getPaymentID() {
 		return this.paymentID;
 	}
@@ -62,7 +69,16 @@ public class PaymentCard
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	public BillingAddress getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(BillingAddress address) {
+		this.address = address;
+	}
 	
 }
+
 
 	
