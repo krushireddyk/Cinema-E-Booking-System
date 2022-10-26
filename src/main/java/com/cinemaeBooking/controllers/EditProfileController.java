@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cinemaeBooking.entities.User;
 import com.cinemaeBooking.service.EditProfileService;
+import com.cinemaeBooking.serviceIMPL.EmailService;
 
 @RestController
 @RequestMapping("/editProfile")
@@ -17,13 +18,21 @@ public class EditProfileController {
     @Autowired
     EditProfileService editProfileService;
 
+    @Autowired
+    EmailService emailService;
+
     @RequestMapping(value = "/{userName}", method = RequestMethod.GET)
     public User getUser(@PathVariable String userName){
         return editProfileService.getUser(userName);
     }
 
     @RequestMapping(value = "/update/{userName}", method = RequestMethod.PUT)
-    public User updateProfile(@PathVariable String userName, @RequestBody User user){
-        return editProfileService.editUser(userName, user);
+    public User updateProfile(@PathVariable String userName, @RequestBody User user) throws Exception{
+        
+        User updateUser = editProfileService.editUser(userName, user);
+        emailService.sendEmail("chaitanyareddy00@gmail.com", updateUser.getFirstName());
+
+        return updateUser;
     }
+
 }

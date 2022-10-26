@@ -1,4 +1,4 @@
-/*package com.cinemaeBooking.serviceIMPL;
+package com.cinemaeBooking.serviceIMPL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+
+import it.ozimov.springboot.mail.model.Email;
 
 import javax.mail.internet.InternetAddress;
 import java.util.Date;
@@ -20,10 +22,6 @@ public class EmailService
     @Autowired
     private JavaMailSender mailSender;
     
-    private void send(MimeMessagePreparator preparator) 
-    {
-        mailSender.send(preparator);
-    }
     @Autowired
     public EmailService(TemplateEngine templateEngine) 
     {
@@ -36,7 +34,7 @@ public class EmailService
         this.templateEngine = templateEngine;
     }
 
-    public void sendVerificationEmail(String email, String firstName) 
+    /*public void sendVerificationEmail(String email, String firstName) 
     {
         Context context = new Context();
         context.setVariable("name", firstName);
@@ -51,6 +49,24 @@ public class EmailService
             message.setText(emailContents, true);
         };
         send(preparator);
+    }*/
+
+    public void sendEmail(String email, String firstName) 
+    {
+        Context context = new Context();
+        context.setVariable("name", firstName);
+        String emailContents = templateEngine.process("profileChanged", context);
+        
+        MimeMessagePreparator preparator = mimeMessage -> {
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+            message.setTo(email);
+            message.setFrom(new InternetAddress("no-reply@cinemaeBooking.com"));
+            message.setSubject("Profile has been changed");
+            message.setSentDate(new Date());
+            message.setText(emailContents, true);
+        };
+        mailSender.send(preparator);
     }
-}*/
+
+}
 

@@ -3,12 +3,19 @@ package com.cinemaeBooking.service;
 import com.cinemaeBooking.entities.BillingAddress;
 import com.cinemaeBooking.entities.HomeAddress;
 import com.cinemaeBooking.entities.PaymentCard;
-import com.cinemaeBooking.entities.Status;
 import com.cinemaeBooking.entities.User;
 import com.cinemaeBooking.repository.UserRepository;
+import com.google.common.collect.Lists;
+
+import it.ozimov.springboot.mail.model.Email;
+import it.ozimov.springboot.mail.model.defaultimpl.DefaultEmail;
+import it.ozimov.springboot.mail.service.EmailService;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,16 +86,14 @@ public class EditProfileService {
     }
 
     @Transactional
-    public User editUser(String userName, User updatedUser) {
+    public User editUser(String userName, User updatedUser) throws Exception{
         User user = userRepository.findByUserName(userName);
         if(updatedUser.getFirstName() != null)
             user.setFirstName(updatedUser.getFirstName());
         if(updatedUser.getLastName() != null)
             user.setLastName(updatedUser.getLastName());
-        if(updatedUser.getEmailID() != null)
-            user.setEmailID(updatedUser.getEmailID());
-        if(updatedUser.getPhoneNumber() != null)
-            user.setPhoneNumber(updatedUser.getPhoneNumber());
+        if(updatedUser.getPassword() != null)
+            user.setPassword(updatedUser.getPassword());
         if(updatedUser.getPaymentCards() != null && !updatedUser.getPaymentCards().isEmpty()) {
             Set<PaymentCard> newPaymentCards = updatedUser.getPaymentCards();
             Set<PaymentCard> paymentCards = user.getPaymentCards();
@@ -97,6 +102,7 @@ public class EditProfileService {
                 for(PaymentCard paymentCard : paymentCards) {
                     if(newPaymentCard.getCard_Number().equals(paymentCard.getCard_Number())) {
                         PaymentCard tempPaymentCard = paymentCard;
+                        paymentCard.setExpiryDate(newPaymentCard.getExpiryDate());
                         if(paymentCard.getAddress() != null && newPaymentCard.getAddress() != null) {
                             BillingAddress billingAddress = paymentCard.getAddress();
                             billingAddress.setPaymentCard(paymentCard);
