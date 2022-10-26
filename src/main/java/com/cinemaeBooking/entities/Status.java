@@ -1,5 +1,6 @@
 package com.cinemaeBooking.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,7 +19,7 @@ public class Status {
 
     private String status;
 
-    @OneToOne(mappedBy = "status")
+    @OneToOne(mappedBy = "status", cascade=CascadeType.ALL)
     private User user;
 
     public Integer getStatusID() {

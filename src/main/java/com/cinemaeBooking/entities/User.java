@@ -30,14 +30,15 @@ public class User
     //@OneToMany
     //private Set<Order> orders = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private Set<HomeAddress> addresses = new HashSet<>();
+	//@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	private HomeAddress address;
 
 	@OneToOne
 	@JoinColumn(name = "roleID")
 	private UserType usertype;
 
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "statusID")
 	private Status status;
     
@@ -92,13 +93,14 @@ public class User
 		this.paymentCards = paymentCards;
 	}
 
-	public Set<HomeAddress> getAddresses() {
-		return this.addresses;
+
+	public HomeAddress getAddress() {
+		return this.address;
 	}
 
-	public void setAddresses(Set<HomeAddress> addresses) {
-		this.addresses = addresses;
-	}
+	public void setAddress(HomeAddress address) {
+		this.address = address;
+	}	
 
 	public String getPhoneNumber() {
 		return phoneNumber;

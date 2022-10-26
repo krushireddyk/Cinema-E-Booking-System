@@ -24,6 +24,6 @@ public class EditProfileController {
 
     @RequestMapping(value = "/update/{userName}", method = RequestMethod.PUT)
     public User updateProfile(@PathVariable String userName, @RequestBody User user){
-        return editProfileService.saveUser(userName, user);
+        return editProfileService.editUser(userName, user);
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import com.cinemaeBooking.entities.User;
 
 @SuppressWarnings("unchecked")
-public interface UserRepository extends JpaRepository<User, Integer> 
+public interface UserRepository extends CrudRepository<User, Integer> 
 {
 	Optional<User> findById(Integer userID);
 	User findByUserName(String userName);
