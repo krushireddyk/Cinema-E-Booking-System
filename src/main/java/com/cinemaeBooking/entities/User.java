@@ -11,6 +11,7 @@ import javax.persistence.*;
 public class User 
 {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer userID;
     private String firstName;
     private String lastName;
@@ -23,20 +24,20 @@ public class User
     //private String verificationCode;
 
 	//@OneToMany(mappedBy = "user")
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
     private Set<PaymentCard> paymentCards;
     
     //@OneToMany
     //private Set<Order> orders = new HashSet<>();
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<HomeAddress> addresses = new HashSet<>();
 
 	@OneToOne
 	@JoinColumn(name = "roleID")
 	private UserType usertype;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "statusID")
 	private Status status;
     

@@ -1,6 +1,9 @@
 package com.cinemaeBooking.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -10,9 +13,10 @@ import javax.persistence.Table;
 @Table(name="homeaddress")
 public class HomeAddress {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne
-	@JoinColumn(name = "userID")
+    @ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userID", referencedColumnName = "userID")
     private User user;
     private String street;
     private String city;
@@ -57,6 +61,10 @@ public class HomeAddress {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

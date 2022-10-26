@@ -1,6 +1,10 @@
 package com.cinemaeBooking.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -12,12 +16,13 @@ import javax.persistence.Table;
 public class PaymentCard 
 {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer paymentID;
 	private String card_Number;
 	private String expiryDate;
 	
-	@ManyToOne
-	@JoinColumn(name = "userID")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userID", referencedColumnName = "userID")
     private User user;
 	public Integer getPaymentID() {
 		return this.paymentID;
@@ -41,5 +46,23 @@ public class PaymentCard
 	public void setExpiryDate(String expiryDate) {
 		this.expiryDate = expiryDate;
 	}
+
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PaymentCard )) return false;
+        return paymentID != null && paymentID.equals(((PaymentCard) o).getPaymentID());
+    }
+ 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 	
 }
+
+	
