@@ -20,7 +20,7 @@ public class User
     private String emailID;
     private String phoneNumber;
     //private boolean enabled;
-    //private String optPromotionalEmails = "false";
+    private Boolean PromotionEnabled;
     //private String verificationCode;
 
 	//@OneToMany(mappedBy = "user")
@@ -30,7 +30,6 @@ public class User
     //@OneToMany
     //private Set<Order> orders = new HashSet<>();
 
-	//@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private HomeAddress address;
 
@@ -41,6 +40,9 @@ public class User
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "statusID")
 	private Status status;
+
+	@Transient
+	private String newPassword;
     
 	public Integer getUserID() {
 		return userID;
@@ -142,6 +144,26 @@ public class User
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public Boolean isPromotionEnabled() {
+		return this.PromotionEnabled;
+	}
+
+	public Boolean getPromotionEnabled() {
+		return this.PromotionEnabled;
+	}
+
+	public void setPromotionEnabled(Boolean PromotionEnabled) {
+		this.PromotionEnabled = PromotionEnabled;
+	}
+
+	public String getNewPassword() {
+		return this.newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
 	}
 
 }

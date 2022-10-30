@@ -30,7 +30,7 @@ public class EditProfileController {
     public User updateProfile(@PathVariable String userName, @RequestBody User user) throws Exception{
         
         User updateUser = editProfileService.editUser(userName, user);
-        emailService.sendEmail(user.getEmailID(), updateUser.getFirstName());
+        //emailService.sendEmail(updateUser.getEmailID(), updateUser.getFirstName());
 
         return updateUser;
     }

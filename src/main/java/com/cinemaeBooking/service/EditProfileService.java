@@ -5,17 +5,9 @@ import com.cinemaeBooking.entities.HomeAddress;
 import com.cinemaeBooking.entities.PaymentCard;
 import com.cinemaeBooking.entities.User;
 import com.cinemaeBooking.repository.UserRepository;
-import com.google.common.collect.Lists;
-
-import it.ozimov.springboot.mail.model.Email;
-import it.ozimov.springboot.mail.model.defaultimpl.DefaultEmail;
-import it.ozimov.springboot.mail.service.EmailService;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,8 +84,11 @@ public class EditProfileService {
             user.setFirstName(updatedUser.getFirstName());
         if(updatedUser.getLastName() != null)
             user.setLastName(updatedUser.getLastName());
-        if(updatedUser.getPassword() != null)
-            user.setPassword(updatedUser.getPassword());
+        if(updatedUser.getPassword() != null) {
+            if(user.getPassword().equals(updatedUser.getPassword())) {
+                user.setPassword(updatedUser.getNewPassword());
+            }
+        }
         if(updatedUser.getPaymentCards() != null && !updatedUser.getPaymentCards().isEmpty()) {
             Set<PaymentCard> newPaymentCards = updatedUser.getPaymentCards();
             Set<PaymentCard> paymentCards = user.getPaymentCards();
@@ -158,6 +153,9 @@ public class EditProfileService {
             HomeAddress newAddress = updatedUser.getAddress();
             newAddress.setUser(user);
             user.setAddress(newAddress);
+        }
+        if(updatedUser.isPromotionEnabled() != null && updatedUser.isPromotionEnabled() != user.isPromotionEnabled()) {
+            user.setPromotionEnabled(updatedUser.getPromotionEnabled());
         }
         return userRepository.save(user);
     }
