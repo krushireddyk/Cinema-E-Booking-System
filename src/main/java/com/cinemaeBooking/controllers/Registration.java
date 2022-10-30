@@ -29,6 +29,7 @@ import com.cinemaeBooking.entities.User;
 import com.cinemaeBooking.entities.UserType;
 //import com.cinemaeBooking.repository.PayCardRepository;
 import com.cinemaeBooking.repository.UserRepository;
+import com.cinemaeBooking.service.EncryptDecrypt;
 import com.cinemaeBooking.serviceIMPL.EmailService;
 @RestController
 public class Registration {
@@ -38,6 +39,9 @@ public class Registration {
 	
 	@Autowired
 	private EmailService emailService;
+
+    @Autowired
+    EncryptDecrypt encryptDecrypt;
 
 	//@Autowired
 	//private PayCardRepository payCardRepository;
@@ -72,7 +76,7 @@ public class Registration {
             user.setUserName(userForm.getUserName());
             user.setEmailID(userForm.getEmailID().toLowerCase());
             user.setPhoneNumber(userForm.getPhoneNumber());
-            user.setPassword(userForm.getPassword());
+            user.setPassword(encryptDecrypt.encrypt(userForm.getPassword()));
             //user.setAddress(userForm.getAddress());
             if(userForm.getAddress() != null) {
                 HomeAddress address = userForm.getAddress();
@@ -115,6 +119,7 @@ public class Registration {
             user.setPaymentCards(paymentCards);
             String verificationCode = getSaltString();
             savedUser = userRepository.save(user);
+            savedUser.setPassword(encryptDecrypt.decrypt(savedUser.getPassword()));
             //emailService.sendRegistrationEmail(userForm.getEmailID().toLowerCase(), verificationCode);
         }
         catch(DataIntegrityViolationException e) {
