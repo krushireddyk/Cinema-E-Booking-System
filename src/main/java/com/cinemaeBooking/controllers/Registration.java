@@ -68,6 +68,7 @@ public class Registration {
 		user.setPassword(userForm.getPassword());
         user.setAddress(userForm.getAddress());
         user.setVerificationCode(getSaltString());
+        user.setPromotionEnabled(userForm.getPromotionEnabled());
 		UserType userType = new UserType();//Instance of UserType
 		userType.setRoleID(2);
 		//userType.setUserRole("Customer");

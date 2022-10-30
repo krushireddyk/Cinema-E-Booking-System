@@ -11,7 +11,6 @@ public class User
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
 	private Integer userID;
     private String firstName;
     private String lastName;
@@ -19,7 +18,7 @@ public class User
     private String password;
     private String emailID;
     private String phoneNumber;
-    private Boolean PromotionEnabled;
+    private Boolean promotionEnabled;
     private String verificationCode;
 
 	//@OneToMany(mappedBy = "user")
@@ -131,15 +130,15 @@ public class User
 	}
 
 	public Boolean isPromotionEnabled() {
-		return this.PromotionEnabled;
+		return this.promotionEnabled;
 	}
 
 	public Boolean getPromotionEnabled() {
-		return this.PromotionEnabled;
+		return this.promotionEnabled;
 	}
 
-	public void setPromotionEnabled(Boolean PromotionEnabled) {
-		this.PromotionEnabled = PromotionEnabled;
+	public void setPromotionEnabled(Boolean promotionEnabled) {
+		this.promotionEnabled = promotionEnabled;
 	}
 
 	public String getNewPassword() {

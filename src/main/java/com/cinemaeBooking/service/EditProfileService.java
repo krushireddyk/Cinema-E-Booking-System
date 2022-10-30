@@ -91,7 +91,7 @@ public class EditProfileService {
         if(updatedUser.getLastName() != null)
             user.setLastName(updatedUser.getLastName());
         if(updatedUser.getPassword() != null) {
-            if(user.getPassword().equals(updatedUser.getPassword())) {
+            if(!user.getPassword().equals(updatedUser.getPassword())) {
                 user.setPassword(updatedUser.getNewPassword());
             }
         }

@@ -1,12 +1,10 @@
 package com.cinemaeBooking.entities;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -18,11 +16,7 @@ public class UserType {
     private Integer RoleID;
     private String userRole;
 
-    //@OneToOne(mappedBy = "usertype")
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userID", referencedColumnName = "userID")
-    //@OneToMany(mappedBy = "usertype", cascade = CascadeType.ALL)//in errors change to above 2 lines
+    @OneToOne(mappedBy = "usertype")
     private User user;
 
     public Integer getRoleID() {
