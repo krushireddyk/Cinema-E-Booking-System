@@ -80,9 +80,9 @@ public class EditProfileService {
         if(updatedUser.getStatus() != null && updatedUser.getStatus().getStatus() != null) {
             user.setStatus(updatedUser.getStatus());
         }
-        if(updatedUser.getUsertype() != null && updatedUser.getUsertype().getUserRole() != null) {
+        /*if(updatedUser.getUsertype() != null && updatedUser.getUsertype().getUserRole() != null) {
             user.setUsertype(updatedUser.getUsertype());
-        }
+        }*/
         return userRepository.save(user);
     }
 

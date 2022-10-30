@@ -28,14 +28,16 @@ public class User
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private HomeAddress address;
 
-	@OneToOne
-	@JoinColumn(name = "roleID")
-	//@ManyToOne
-    //@JoinColumn(name = "roleID")
+	//@OneToOne
+	//@JoinColumn(name = "roleID")
+	@ManyToOne(optional = true)
+	@JoinColumn(name ="roleID")
 	private UserType usertype;
 
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name = "statusID")
+	//@OneToOne
+	//@JoinColumn(name = "statusID")
+	@ManyToOne(optional = true)
+	@JoinColumn(name ="statusID")
 	//@ManyToOne
     //@JoinColumn(name = "statusID")
 	private Status status;

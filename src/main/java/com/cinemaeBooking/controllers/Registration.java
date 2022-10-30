@@ -1,11 +1,14 @@
 package com.cinemaeBooking.controllers;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Random;
 import java.util.Set;
 
 import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -18,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cinemaeBooking.entities.BillingAddress;
+import com.cinemaeBooking.entities.HomeAddress;
 import com.cinemaeBooking.entities.PaymentCard;
+import com.cinemaeBooking.entities.RStatus;
 import com.cinemaeBooking.entities.Status;
 import com.cinemaeBooking.entities.User;
 import com.cinemaeBooking.entities.UserType;
@@ -53,45 +58,78 @@ public class Registration {
 	}
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public Object registerAccount(@RequestBody User userForm, BindingResult bindingResult) throws IOException, MessagingException
+	public ResponseEntity<?> registerAccount(@RequestBody User userForm, BindingResult bindingResult)
 	{
 		User user = new User();
-		if (bindingResult.hasErrors()) 
-        {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        User savedUser = null;
+        try {
+            if (bindingResult.hasErrors()) 
+            {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+            user.setLastName(userForm.getLastName());
+            user.setFirstName(userForm.getFirstName());
+            user.setUserName(userForm.getUserName());
+            user.setEmailID(userForm.getEmailID().toLowerCase());
+            user.setPhoneNumber(userForm.getPhoneNumber());
+            user.setPassword(userForm.getPassword());
+            //user.setAddress(userForm.getAddress());
+            if(userForm.getAddress() != null) {
+                HomeAddress address = userForm.getAddress();
+                address.setCity(userForm.getAddress().getCity());
+                address.setState(userForm.getAddress().getState());
+                address.setStreet(userForm.getAddress().getStreet());
+                address.setZipCode(userForm.getAddress().getZipCode());
+                address.setUser(user);
+                user.setAddress(address);
+            }
+            user.setVerificationCode(getSaltString());
+            user.setPromotionEnabled(userForm.getPromotionEnabled());
+            UserType userType = new UserType();//Instance of UserType
+            userType.setRoleID(2);
+            userType.setUserRole("Customer");
+            //userType.setUser(user);
+            user.setUsertype(userType);
+            
+            
+            Status status = new Status();
+            status.setStatusID(2);
+            status.setStatus("InActive");
+            //status.setUser(user);
+            user.setStatus(status);
+            
+            Set<PaymentCard> paymentCards = userForm.getPaymentCards();
+            
+            for(PaymentCard paymentCard : paymentCards)
+            {
+                BillingAddress billingAddress = new BillingAddress();
+                billingAddress.setCity(paymentCard.getAddress().getCity());
+                billingAddress.setState(paymentCard.getAddress().getState());
+                billingAddress.setStreet(paymentCard.getAddress().getStreet());
+                billingAddress.setZipCode(paymentCard.getAddress().getZipCode());
+                billingAddress.setPaymentCard(paymentCard);
+                paymentCard.setAddress(billingAddress);
+                paymentCard.setUser(user);
+                paymentCards.add(paymentCard);
+            }
+            user.setPaymentCards(paymentCards);
+            String verificationCode = getSaltString();
+            savedUser = userRepository.save(user);
+            //emailService.sendRegistrationEmail(userForm.getEmailID().toLowerCase(), verificationCode);
         }
-		user.setLastName(userForm.getLastName());
-		user.setFirstName(userForm.getFirstName());
-		user.setUserName(userForm.getUserName());
-		user.setEmailID(userForm.getEmailID().toLowerCase());
-		user.setPhoneNumber(userForm.getPhoneNumber());
-		user.setPassword(userForm.getPassword());
-        user.setAddress(userForm.getAddress());
-        user.setVerificationCode(getSaltString());
-        user.setPromotionEnabled(userForm.getPromotionEnabled());
-		UserType userType = new UserType();//Instance of UserType
-		userType.setRoleID(2);
-		//userType.setUserRole("Customer");
-		
-        
-		Status status = new Status();
-		status.setStatusID(1);
-		//status.setStatus("InActive");
-		
-        Set<PaymentCard> paymentCards = userForm.getPaymentCards();
-        
-        for(PaymentCard paymentCard : paymentCards)
-        {
-        	BillingAddress billingAddress = paymentCard.getAddress();
-            billingAddress.setPaymentCard(paymentCard);
-            paymentCard.setAddress(billingAddress);
-            paymentCard.setUser(user);
-            paymentCards.add(paymentCard);
+        catch(DataIntegrityViolationException e) {
+            RStatus status = new RStatus();
+            if(e.getLocalizedMessage().contains("EmailID")) {
+                status.setStatusCode(400);
+                status.setStatusMessage("emailID already registered, please provide different emailID");
+            }
+            else if (e.getLocalizedMessage().contains("UserName")) {
+                status.setStatusCode(400);
+                status.setStatusMessage("userName already exists, please provide different userName");
+            }
+            return new ResponseEntity<RStatus>(status, HttpStatus.BAD_REQUEST);
         }
-        user.setPaymentCards(paymentCards);
-        String verificationCode = getSaltString();
-        emailService.sendRegistrationEmail(userForm.getEmailID().toLowerCase(), verificationCode);   
-        return userRepository.save(user);
+        return new ResponseEntity<User>(savedUser, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/accountVerification", method = RequestMethod.GET)

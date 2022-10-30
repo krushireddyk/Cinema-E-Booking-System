@@ -1,10 +1,13 @@
 package com.cinemaeBooking.entities;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -17,9 +20,9 @@ public class Status {
 
     private String status;
 
-    @OneToOne(mappedBy = "status", cascade=CascadeType.ALL)
-    //@OneToMany(mappedBy = "status", cascade = CascadeType.ALL)
-    private User user;
+    //@OneToOne(mappedBy = "status", cascade=CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "usertype")
+    private Set<User> users;
 
     public Integer getStatusID() {
         return this.statusID;

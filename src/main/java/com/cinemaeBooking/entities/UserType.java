@@ -1,9 +1,13 @@
 package com.cinemaeBooking.entities;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -16,8 +20,9 @@ public class UserType {
     private Integer RoleID;
     private String userRole;
 
-    @OneToOne(mappedBy = "usertype")
-    private User user;
+    //@OneToOne(mappedBy = "usertype", cascade=CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "usertype")
+    private Set<User> users;
 
     public Integer getRoleID() {
         return this.RoleID;
@@ -34,4 +39,5 @@ public class UserType {
     public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
+
 }
