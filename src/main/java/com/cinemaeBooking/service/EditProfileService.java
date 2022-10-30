@@ -4,6 +4,7 @@ import com.cinemaeBooking.entities.BillingAddress;
 import com.cinemaeBooking.entities.HomeAddress;
 import com.cinemaeBooking.entities.PaymentCard;
 import com.cinemaeBooking.entities.User;
+import com.cinemaeBooking.exception.CustomErrorsException;
 import com.cinemaeBooking.repository.UserRepository;
 import java.util.HashSet;
 import java.util.Set;
@@ -94,8 +95,12 @@ public class EditProfileService {
         if(updatedUser.getLastName() != null)
             user.setLastName(updatedUser.getLastName());
         if(updatedUser.getPassword() != null) {
-            if(!user.getPassword().equals(updatedUser.getPassword())) {
+            String currentPassword = encryptDecrypt.decrypt(user.getPassword());
+            if(currentPassword.equals(updatedUser.getPassword())) {
                 user.setPassword(encryptDecrypt.encrypt(updatedUser.getNewPassword()));
+            }
+            else {
+                throw new CustomErrorsException("password does not match");
             }
         }
         if(updatedUser.getPaymentCards() != null && !updatedUser.getPaymentCards().isEmpty()) {

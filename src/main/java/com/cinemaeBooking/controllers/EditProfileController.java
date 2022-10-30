@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cinemaeBooking.entities.RStatus;
 import com.cinemaeBooking.entities.User;
+import com.cinemaeBooking.exception.CustomErrorsException;
 import com.cinemaeBooking.service.EditProfileService;
 import com.cinemaeBooking.service.EncryptDecrypt;
 import com.cinemaeBooking.serviceIMPL.EmailService;
@@ -48,7 +49,14 @@ public class EditProfileController {
         try {
             updateUser = editProfileService.editUser(userName, user);
             updateUser.setPassword(encryptDecrypt.decrypt(updateUser.getPassword()));
-        } catch (Exception e) {
+        } 
+        catch (CustomErrorsException e) {
+            RStatus status = new RStatus();
+            status.setStatusCode(400);
+            status.setStatusMessage(e.getMessage());
+            return new ResponseEntity<RStatus>(status, HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
             RStatus status = new RStatus();
             status.setStatusCode(500);
             status.setStatusMessage(e.getLocalizedMessage());
