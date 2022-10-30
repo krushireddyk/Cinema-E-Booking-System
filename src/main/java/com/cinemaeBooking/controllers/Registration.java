@@ -1,42 +1,44 @@
 package com.cinemaeBooking.controllers;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.Properties;
 import java.util.Random;
+import java.util.Set;
 
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.cinemaeBooking.entities.BillingAddress;
+import com.cinemaeBooking.entities.PaymentCard;
+import com.cinemaeBooking.entities.Status;
 import com.cinemaeBooking.entities.User;
+import com.cinemaeBooking.entities.UserType;
 //import com.cinemaeBooking.repository.PayCardRepository;
 import com.cinemaeBooking.repository.UserRepository;
-
+import com.cinemaeBooking.serviceIMPL.EmailService;
+@RestController
 public class Registration {
 	
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private EmailService emailService;
+
 	//@Autowired
 	//private PayCardRepository payCardRepository;
 	
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	//@Autowired
+	//private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	public Registration(UserRepository userRepository) 
     {
@@ -51,39 +53,74 @@ public class Registration {
 	}
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public Object registerAccount(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) throws IOException, MessagingException
+	public Object registerAccount(@RequestBody User userForm, BindingResult bindingResult) throws IOException, MessagingException
 	{
-		return null;
+		User user = new User();
+		if (bindingResult.hasErrors()) 
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+		user.setLastName(userForm.getLastName());
+		user.setFirstName(userForm.getFirstName());
+		user.setUserName(userForm.getUserName());
+		user.setEmailID(userForm.getEmailID().toLowerCase());
+		user.setPhoneNumber(userForm.getPhoneNumber());
+		user.setPassword(userForm.getPassword());
+        user.setAddress(userForm.getAddress());
+        user.setVerificationCode(getSaltString());
+		UserType userType = new UserType();//Instance of UserType
+		userType.setRoleID(2);
+		//userType.setUserRole("Customer");
+		
+        
+		Status status = new Status();
+		status.setStatusID(1);
+		//status.setStatus("InActive");
+		
+        Set<PaymentCard> paymentCards = userForm.getPaymentCards();
+        
+        for(PaymentCard paymentCard : paymentCards)
+        {
+        	BillingAddress billingAddress = paymentCard.getAddress();
+            billingAddress.setPaymentCard(paymentCard);
+            paymentCard.setAddress(billingAddress);
+            paymentCard.setUser(user);
+            paymentCards.add(paymentCard);
+        }
+        user.setPaymentCards(paymentCards);
+        String verificationCode = getSaltString();
+        emailService.sendRegistrationEmail(userForm.getEmailID().toLowerCase(), verificationCode);   
+        return userRepository.save(user);
 	}
 	
-	@RequestMapping(value = "/registrationconfirmation", method = RequestMethod.GET)
+	@RequestMapping(value = "/accountVerification", method = RequestMethod.GET)
 	public String showRegistrationConfirmationPage(ModelMap model) 
 	{
-        model.addAttribute("registrationconfirmation", new User());
-        return "registrationconfirmation";
+        model.addAttribute("accountVerification", new User());
+        return "accountVerification";
     }
 	
-	/*@RequestMapping(value = "/registrationconfirmation", method = RequestMethod.POST)
-	public Object submitConfirmationCode(@ModelAttribute("registrationconfirmation") User userForm, Model model)
+	@RequestMapping(value = "/accountVerification", method = RequestMethod.POST)
+	public Object submitConfirmationCode(@ModelAttribute("accountVerification") User userForm, Model model)
 	{
-		/*User userInstance = userRepository.findByVerificationCode(userForm.getVerificationCode());
+		User userInstance = userRepository.findByEmailID(userForm.getEmailID());
         if (userInstance == null || !(userInstance.getVerificationCode().matches(userForm.getVerificationCode()))) 
         {
             System.out.println("Incorrect Verification Code");
             System.out.println(userInstance);
-            return "registrationconfirmation";
+            return "accountVerification";
         }
         
         if (!(userInstance == null || !(userInstance.getVerificationCode().matches(userForm.getVerificationCode())))) 
         {
-            userInstance.setUserStatus("ACTIVE");
+        	Status status = new Status();
+        	status.setStatus("ACTIVE");
             userRepository.save(userInstance);
             System.out.println("Account is now active");
             return "redirect:/login";
         }
-        
-        return "redirect:/registrationconfirmation";
-	}*/
+        return "redirect:/accountVerification";
+	}
 	
 	protected String getSaltString() 
 	{
@@ -98,30 +135,4 @@ public class Registration {
         String saltString = sb.toString();
         return saltString;
     }
-	
-	private void sendmail(String emailRecipient, String verCode) throws AddressException, MessagingException, IOException 
-	{
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
-        Session session = Session.getInstance(props, new javax.mail.Authenticator() 
-        {
-            protected PasswordAuthentication getPasswordAuthentication() 
-            {
-                return new PasswordAuthentication("cinemaregconf@gmail.com", "HotStuffSecure1!");
-            }
-        });
-        
-        Message msg = new MimeMessage(session);
-        msg.setFrom(new InternetAddress("cinemaregconf@gmail.com", false));
-        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailRecipient));
-        msg.setSubject("Registration Confirmation Email");
-        msg.setContent("Hello, \n\nThank you for registering to our cinema e-booking system!\n\nYour verification code is: "+verCode, "text/html");
-        msg.setSentDate(new Date());
-        Transport.send(msg);
-    }
-
 }
