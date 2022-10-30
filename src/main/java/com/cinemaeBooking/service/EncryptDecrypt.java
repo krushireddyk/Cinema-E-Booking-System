@@ -6,7 +6,9 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EncryptDecrypt {
 
     private static final String UNICODE_FORMAT = "UTF8";

@@ -18,6 +18,9 @@ public class EditProfileService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    EncryptDecrypt encryptDecrypt;
+
     @Transactional
     public User saveUser(String userName, User updatedUser) 
     {
@@ -92,7 +95,7 @@ public class EditProfileService {
             user.setLastName(updatedUser.getLastName());
         if(updatedUser.getPassword() != null) {
             if(!user.getPassword().equals(updatedUser.getPassword())) {
-                user.setPassword(updatedUser.getNewPassword());
+                user.setPassword(encryptDecrypt.encrypt(updatedUser.getNewPassword()));
             }
         }
         if(updatedUser.getPaymentCards() != null && !updatedUser.getPaymentCards().isEmpty()) {

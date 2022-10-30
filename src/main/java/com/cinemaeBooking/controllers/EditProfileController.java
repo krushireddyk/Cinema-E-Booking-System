@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cinemaeBooking.entities.RStatus;
 import com.cinemaeBooking.entities.User;
 import com.cinemaeBooking.service.EditProfileService;
+import com.cinemaeBooking.service.EncryptDecrypt;
 import com.cinemaeBooking.serviceIMPL.EmailService;
 
 @RestController
@@ -24,6 +25,9 @@ public class EditProfileController {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    EncryptDecrypt encryptDecrypt;
+
     @RequestMapping(value = "/{userName}", method = RequestMethod.GET)
     public ResponseEntity<?> getUser(@PathVariable String userName) {
         User user = editProfileService.getUser(userName);
@@ -33,6 +37,7 @@ public class EditProfileController {
             status.setStatusMessage("userName cannot be found");
             return new ResponseEntity<RStatus>(status, HttpStatus.BAD_REQUEST);
         }
+        user.setPassword(encryptDecrypt.decrypt(user.getPassword()));
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
@@ -42,6 +47,7 @@ public class EditProfileController {
         User updateUser = null;
         try {
             updateUser = editProfileService.editUser(userName, user);
+            updateUser.setPassword(encryptDecrypt.decrypt(updateUser.getPassword()));
         } catch (Exception e) {
             RStatus status = new RStatus();
             status.setStatusCode(500);
