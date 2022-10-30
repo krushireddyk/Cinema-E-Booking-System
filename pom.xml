@@ -72,8 +72,7 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.15</version>
-		</dependency>
+			</dependency>
 		<dependency>
 			<groupId>it.ozimov</groupId>
 			<artifactId>spring-boot-email-core</artifactId>

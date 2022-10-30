@@ -1,7 +1,5 @@
 package com.cinemaeBooking.repository;
 
-import java.util.Collection;
-
 import org.springframework.data.repository.CrudRepository;
 
 //import com.cinemaeBooking.entities.Order;

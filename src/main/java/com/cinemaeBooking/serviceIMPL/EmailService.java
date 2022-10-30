@@ -9,8 +9,6 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
-import it.ozimov.springboot.mail.model.Email;
-
 import javax.mail.internet.InternetAddress;
 import java.util.Date;
 
@@ -34,23 +32,6 @@ public class EmailService
         this.templateEngine = templateEngine;
     }
 
-    /*public void sendVerificationEmail(String email, String firstName) 
-    {
-        Context context = new Context();
-        context.setVariable("name", firstName);
-        String emailContents = templateEngine.process("verifyemail", context);
-        
-        MimeMessagePreparator preparator = mimeMessage -> {
-            MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
-            message.setTo(email);
-            message.setFrom(new InternetAddress("no-reply@cinemaeBooking.com"));
-            message.setSubject("Verify Your email");
-            message.setSentDate(new Date());
-            message.setText(emailContents, true);
-        };
-        send(preparator);
-    }*/
-
     public void sendEmail(String email, String firstName) 
     {
         Context context = new Context();
@@ -62,6 +43,40 @@ public class EmailService
             message.setTo(email);
             message.setFrom(new InternetAddress("no-reply@cinemaeBooking.com"));
             message.setSubject("Profile has been changed");
+            message.setSentDate(new Date());
+            message.setText(emailContents, true);
+        };
+        mailSender.send(preparator);
+    }
+    
+    public void sendRegistrationEmail(String email, String verificationCode)
+    {
+    	Context context = new Context();
+        context.setVariable("code", verificationCode);
+        String emailContents = templateEngine.process("verifyAccount", context);
+        
+        MimeMessagePreparator preparator = mimeMessage -> {
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+            message.setTo(email);
+            message.setFrom(new InternetAddress("jhr6066@gmail.com"));
+            message.setSubject("Cinema e-Booking : Verify your Account with :"+verificationCode);
+            message.setSentDate(new Date());
+            message.setText(emailContents, true);
+        };
+        mailSender.send(preparator);
+    }
+    
+    public void sendForgotPasswordEmail(String email, String verificationCode)
+    {
+    	Context context = new Context();
+        context.setVariable("code", verificationCode);
+        String emailContents = templateEngine.process("verifyAccount", context);
+        
+        MimeMessagePreparator preparator = mimeMessage -> {
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+            message.setTo(email);
+            message.setFrom(new InternetAddress("jhr2k64@gmail.com"));
+            message.setSubject("change your password");
             message.setSentDate(new Date());
             message.setText(emailContents, true);
         };

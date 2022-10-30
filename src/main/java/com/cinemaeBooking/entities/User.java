@@ -1,6 +1,5 @@
 package com.cinemaeBooking.entities;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -12,6 +11,7 @@ public class User
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
 	private Integer userID;
     private String firstName;
     private String lastName;
@@ -19,26 +19,26 @@ public class User
     private String password;
     private String emailID;
     private String phoneNumber;
-    //private boolean enabled;
     private Boolean PromotionEnabled;
-    //private String verificationCode;
+    private String verificationCode;
 
 	//@OneToMany(mappedBy = "user")
 	@OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
     private Set<PaymentCard> paymentCards;
-    
-    //@OneToMany
-    //private Set<Order> orders = new HashSet<>();
-
+	
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private HomeAddress address;
 
 	@OneToOne
 	@JoinColumn(name = "roleID")
+	//@ManyToOne
+    //@JoinColumn(name = "roleID")
 	private UserType usertype;
 
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "statusID")
+	//@ManyToOne
+    //@JoinColumn(name = "statusID")
 	private Status status;
 
 	@Transient
@@ -83,10 +83,6 @@ public class User
 		this.emailID = emailID;
 	}
 
-	/*public boolean getEnabled() {
-		return this.enabled;
-	}*/
-
 	public Set<PaymentCard> getPaymentCards() {
 		return this.paymentCards;
 	}
@@ -110,25 +106,13 @@ public class User
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	/*public boolean isEnabled() {
-		return enabled;
-	}
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}*/
-	/*public String getOptPromotionalEmails() {
-		return optPromotionalEmails;
-	}
-	public void setOptPromotionalEmails(String optPromotionalEmails) {
-		this.optPromotionalEmails = optPromotionalEmails;
-	}*/
 
-	/*public String getVerificationCode() {
+	public String getVerificationCode() {
 		return verificationCode;
 	}
 	public void setVerificationCode(String verificationCode) {
 		this.verificationCode = verificationCode;
-	}*/
+	}
 
 	public UserType getUsertype() {
 		return this.usertype;

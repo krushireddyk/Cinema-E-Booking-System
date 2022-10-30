@@ -5,7 +5,6 @@ import com.cinemaeBooking.entities.HomeAddress;
 import com.cinemaeBooking.entities.PaymentCard;
 import com.cinemaeBooking.entities.User;
 import com.cinemaeBooking.repository.UserRepository;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,8 +19,10 @@ public class EditProfileService {
     UserRepository userRepository;
 
     @Transactional
-    public User saveUser(String userName, User updatedUser) {
+    public User saveUser(String userName, User updatedUser) 
+    {
         User user = userRepository.findByUserName(userName);
+        
         if(updatedUser.getFirstName() != null)
             user.setFirstName(updatedUser.getFirstName());
         if(updatedUser.getLastName() != null)
@@ -31,15 +32,20 @@ public class EditProfileService {
         if(updatedUser.getPhoneNumber() != null)
             user.setPhoneNumber(updatedUser.getPhoneNumber());
         if(updatedUser.getPaymentCards() != null && !updatedUser.getPaymentCards().isEmpty()) {
+        	
             Set<PaymentCard> newPaymentCards = updatedUser.getPaymentCards();
+            
             Set<PaymentCard> paymentCards = user.getPaymentCards();
+            
             for(PaymentCard paymentCard : newPaymentCards) {
                 if(paymentCard.getAddress() != null) {
                     System.out.println(paymentCard.getAddress().getCity());
                     System.out.println(paymentCard.getAddress().getState());
                     System.out.println(paymentCard.getAddress().getStreet());
                     System.out.println(paymentCard.getAddress().getZipCode());
+                    
                     BillingAddress billingAddress = paymentCard.getAddress();
+                    
                     billingAddress.setPaymentCard(paymentCard);
                     paymentCard.setAddress(billingAddress);
                 }
