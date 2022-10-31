@@ -61,7 +61,7 @@ public class UserController
 		return adminFlag;
 	}
 	
-	@RequestMapping(value = "/forgotPassword/{emailID}",method=RequestMethod.GET)
+	@RequestMapping(value = "/forgotPassword/{userName}",method=RequestMethod.GET)
 	public ResponseEntity<?> getVerificationCode(@PathVariable String userName)
 	{
 		String un = null;
