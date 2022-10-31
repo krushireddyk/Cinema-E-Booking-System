@@ -38,7 +38,6 @@ public class EditProfileController {
             status.setStatusMessage("userName cannot be found");
             return new ResponseEntity<RStatus>(status, HttpStatus.BAD_REQUEST);
         }
-        user.setPassword(encryptDecrypt.decrypt(user.getPassword()));
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
