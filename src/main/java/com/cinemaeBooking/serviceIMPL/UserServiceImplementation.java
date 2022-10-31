@@ -5,14 +5,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cinemaeBooking.dbutil.DbUtil;
+import com.cinemaeBooking.entities.Status;
+import com.cinemaeBooking.entities.User;
+import com.cinemaeBooking.entities.UserType;
+import com.cinemaeBooking.service.EncryptDecrypt;
 import com.cinemaeBooking.service.UserService;
+
 
 @Service
 public class UserServiceImplementation implements UserService
 {
+	@Autowired
+	EncryptDecrypt encryptDecrypt;
+	
 	Connection connection;
 	int flag = 0;
 	int adminFlag = 0;
@@ -23,39 +32,31 @@ public class UserServiceImplementation implements UserService
 	}
 
 	@Override
-	public int loginValidation(String userName, String password) 
+	public User loginValidation(String userName, String password) 
 	{
+		User user = new User();
 		try 
 		{
-			PreparedStatement statement = connection.prepareStatement("Select * from user where UserName='"+userName+"'");
-			ResultSet resultSet = statement.executeQuery();
-			
+			PreparedStatement statement = connection.prepareStatement("Select * from user where UserName='"+userName+"' and password='"+encryptDecrypt.encrypt(password)+"'");
+			ResultSet resultSet = statement.executeQuery();	
+
 			while(resultSet.next())
 			{
-				if(resultSet.getString(4).equals(userName) && resultSet.getString(7).equals(password))
-				{
-					if(resultSet.getInt(8)==1 && resultSet.getInt(9)==2)
-					{
-						flag = 1;
-					}
-					else 
-					{
-						System.out.println("User is not verified/User is not authorized to access");
-						flag = 0;
-					}
-				}
-				else
-				{
-					System.out.println("Invalid Username or Password");
-					flag = 0;
-				}
+				Status status = new Status();
+				UserType ut = new UserType();
+				user.setUserName(resultSet.getString(4));
+				user.setPassword(resultSet.getString(7));
+				status.setStatusID(resultSet.getInt(8));
+				user.setStatus(status);
+				ut.setRoleID(resultSet.getInt(9));
+				user.setUsertype(ut);
 			}			
 		} 
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
-		return flag;
+		return user;
 	}
 
 	@Override
@@ -117,5 +118,23 @@ public class UserServiceImplementation implements UserService
 			throw e;
 		}
 		return vcode;	
+	}
+
+	@Override
+	public void verifyVerificationCode(User user) 
+	{
+		User updatedUser = new User();
+		try 
+		{
+			PreparedStatement statement = connection.prepareStatement("update user set statusID=1 where UserName='"+user.getUserName()+"' and verificationCode='"+user.getVerificationCode()+"'");
+			int resultSet = statement.executeUpdate();
+			System.out.println(resultSet);
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+
 	}
 }

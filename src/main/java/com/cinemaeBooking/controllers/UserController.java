@@ -3,6 +3,8 @@ package com.cinemaeBooking.controllers;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cinemaeBooking.entities.RStatus;
 import com.cinemaeBooking.entities.User;
 import com.cinemaeBooking.repository.UserRepository;
 import com.cinemaeBooking.service.UserService;
@@ -31,15 +34,20 @@ public class UserController
 	
 	//@PostMapping("login/{userName}/{password}")
 	//public int userLogin(@PathVariable("userName") String userName,@PathVariable("password") String password)
+	
 	@PostMapping("/login")
-	public int userLogin(@RequestBody String userName, String password)
+	public ResponseEntity<?> userLogin(@RequestBody User user)
 	{
-		int flag = userService.loginValidation(userName, password);
-		if(flag == 0)
+		//System.out.println(userName);
+		User u = userService.loginValidation(user.getUserName(),user.getPassword());
+		if(u.getUserName()==null)
 		{
-			return 0;
+			RStatus r = new RStatus();
+			r.setStatusCode(400);
+			r.setStatusMessage("Invalid credentials");
+			return new ResponseEntity<RStatus>(r, HttpStatus.BAD_REQUEST);
 		}
-		return flag;
+		return new ResponseEntity<User>(u, HttpStatus.OK);
 	}
 	@PostMapping("/adminLogin")
 	//@GetMapping("adminLogin/{userName}/{password}")
@@ -68,4 +76,11 @@ public class UserController
 		}
 		return un;
     }
+	@RequestMapping(value = "/verifyverificationcode",method=RequestMethod.PUT)
+	public void verifyVerificationCode(@RequestBody User user)
+	{
+		System.out.println(user.getUserName()+user.getVerificationCode());
+		userServiceImplementation.verifyVerificationCode(user);
+		
+	}
 }

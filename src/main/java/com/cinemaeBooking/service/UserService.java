@@ -4,10 +4,13 @@ import java.sql.SQLException;
 
 import org.springframework.stereotype.Repository;
 
+import com.cinemaeBooking.entities.User;
+
 @Repository
 public interface UserService 
 {
-	public int loginValidation(String userName, String password);
+	public User loginValidation(String userName, String password);
 	public int adminLoginValidation(String userName, String password);
-	public String getVerificationCode(String email) throws SQLException;;
+	public String getVerificationCode(String email) throws SQLException;
+	public void verifyVerificationCode(User user);
 }

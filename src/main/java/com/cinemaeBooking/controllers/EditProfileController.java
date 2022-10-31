@@ -62,7 +62,7 @@ public class EditProfileController {
             status.setStatusMessage(e.getLocalizedMessage());
             return new ResponseEntity<RStatus>(status, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        //emailService.sendEmail(updateUser.getEmailID(), updateUser.getFirstName());
+        emailService.sendEmail(updateUser.getEmailID(), updateUser.getFirstName());
 
         return new ResponseEntity<User>(updateUser, HttpStatus.OK);
     }

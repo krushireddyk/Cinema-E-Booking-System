@@ -123,7 +123,7 @@ public class Registration {
             String verificationCode = getSaltString();
             savedUser = userRepository.save(user);
             savedUser.setPassword(encryptDecrypt.decrypt(savedUser.getPassword()));
-            //emailService.sendRegistrationEmail(userForm.getEmailID().toLowerCase(), verificationCode);
+            emailService.sendRegistrationEmail(userForm.getEmailID().toLowerCase(), savedUser.getVerificationCode(),savedUser.getUserName());
         }
         catch(DataIntegrityViolationException e) {
             RStatus status = new RStatus();
@@ -171,7 +171,7 @@ public class Registration {
 	
 	protected String getSaltString() 
 	{
-        String allChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        String allChars = "1234567890";
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
         while (sb.length() < 6) // length of the random string.

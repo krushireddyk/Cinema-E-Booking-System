@@ -49,7 +49,7 @@ public class EmailService
         mailSender.send(preparator);
     }
     
-    public void sendRegistrationEmail(String email, String verificationCode)
+    public void sendRegistrationEmail(String email, String verificationCode, String userName)
     {
     	Context context = new Context();
         context.setVariable("code", verificationCode);
@@ -59,7 +59,7 @@ public class EmailService
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
             message.setTo(email);
             message.setFrom(new InternetAddress("jhr6066@gmail.com"));
-            message.setSubject("Cinema e-Booking : Verify your Account with :"+verificationCode);
+            message.setSubject("Cinema e-Booking : Verify your Account with :"+verificationCode+", userName: "+userName);
             message.setSentDate(new Date());
             message.setText(emailContents, true);
         };
