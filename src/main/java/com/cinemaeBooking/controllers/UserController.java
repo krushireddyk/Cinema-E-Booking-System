@@ -61,21 +61,31 @@ public class UserController
 		return adminFlag;
 	}
 	
-	@RequestMapping(value = "/forgotPassword/{userName}",method=RequestMethod.GET)
-	public String getVerificationCode(@PathVariable String uname)
+	@RequestMapping(value = "/forgotPassword/{emailID}",method=RequestMethod.GET)
+	public ResponseEntity<?> getVerificationCode(@PathVariable String emailID)
 	{
 		String un = null;
         try 
         {
-			un= userServiceImplementation.getVerificationCode(uname);	
-			emailService.sendForgotPasswordEmail(uname,un);
+			User user = userRepository.findByEmailID(emailID);
+			if(user == null) {
+				RStatus status = new RStatus();
+				status.setStatusCode(400);
+				status.setStatusMessage("Invalid email");
+				return new ResponseEntity<RStatus>(status, HttpStatus.BAD_REQUEST);
+			}
+			un= userServiceImplementation.getVerificationCode(user.getUserName());	
+			emailService.sendForgotPasswordEmail(emailID,un);
 		} 
         catch (SQLException e) 
         {
 			e.printStackTrace();
 		}
-		return un;
-    }
+		RStatus status = new RStatus();
+		status.setStatusCode(200);
+		status.setStatusMessage("Please verify your email for reset password link");
+		return new ResponseEntity<RStatus>(status, HttpStatus.OK);
+}
 	@RequestMapping(value = "/verifyverificationcode",method=RequestMethod.PUT)
 	public ResponseEntity<?>  verifyVerificationCode(@RequestBody User user)
 	{
