@@ -142,4 +142,26 @@ public class UserServiceImplementation implements UserService
 		return 0;
 
 	}
+
+	@Override
+	public int changePassword(User user) 
+	{
+		try 
+		{
+			PreparedStatement statement = connection.prepareStatement("update user set password='"+encryptDecrypt.encrypt(user.getPassword())+"' where UserName='"+user.getUserName()+"' and verificationCode='"+user.getVerificationCode()+"'");
+			int resultSet = statement.executeUpdate();
+
+			System.out.println(resultSet);
+			if(resultSet > 0) {
+				return 1;
+			}
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return 0;
+
+	}
 }

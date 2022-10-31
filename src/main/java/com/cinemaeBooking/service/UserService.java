@@ -13,4 +13,5 @@ public interface UserService
 	public int adminLoginValidation(String userName, String password);
 	public String getVerificationCode(String email) throws SQLException;
 	public int verifyVerificationCode(User user);
+	public int changePassword(User user);
 }

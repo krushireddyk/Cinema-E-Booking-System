@@ -102,4 +102,21 @@ public class UserController
 		return new ResponseEntity<RStatus>(rstatus, HttpStatus.OK);
 		
 	}
+
+	@RequestMapping(value = "/changePassword",method=RequestMethod.PUT)
+	public ResponseEntity<?>  changePassword(@RequestBody User user)
+	{
+		System.out.println(user.getUserName()+user.getVerificationCode());
+		int status = userServiceImplementation.changePassword(user);
+		RStatus rstatus = new RStatus();
+		if(status == 0) {
+			rstatus.setStatusCode(400);
+			rstatus.setStatusMessage("Invalid userName or verificationCode");
+			return new ResponseEntity<RStatus>(rstatus, HttpStatus.BAD_REQUEST);
+		}
+		rstatus.setStatusCode(200);
+		rstatus.setStatusMessage("Password Reset successful");
+		return new ResponseEntity<RStatus>(rstatus, HttpStatus.OK);
+		
+	}
 }
