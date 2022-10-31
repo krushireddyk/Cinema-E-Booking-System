@@ -62,12 +62,12 @@ public class UserController
 	}
 	
 	@RequestMapping(value = "/forgotPassword/{emailID}",method=RequestMethod.GET)
-	public ResponseEntity<?> getVerificationCode(@PathVariable String emailID)
+	public ResponseEntity<?> getVerificationCode(@PathVariable String userName)
 	{
 		String un = null;
         try 
         {
-			User user = userRepository.findByEmailID(emailID);
+			User user = userRepository.findByUserName(userName);
 			if(user == null) {
 				RStatus status = new RStatus();
 				status.setStatusCode(400);
@@ -75,7 +75,7 @@ public class UserController
 				return new ResponseEntity<RStatus>(status, HttpStatus.BAD_REQUEST);
 			}
 			un= userServiceImplementation.getVerificationCode(user.getUserName());	
-			emailService.sendForgotPasswordEmail(emailID,un);
+			emailService.sendForgotPasswordEmail(user.getEmailID(),un);
 		} 
         catch (SQLException e) 
         {
