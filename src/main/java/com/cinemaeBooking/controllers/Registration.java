@@ -3,6 +3,7 @@ package com.cinemaeBooking.controllers;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
@@ -117,12 +118,20 @@ public class Registration {
                 String expDate = paymentCard.getExpiryDate();
                 expDate=expDate+"-01";
                 paymentCard.setExpiryDate(expDate);
+                paymentCard.setCard_Number(encryptDecrypt.encrypt(paymentCard.getCard_Number()));
                 paymentCards.add(paymentCard);
             }
             user.setPaymentCards(paymentCards);
             String verificationCode = getSaltString();
             savedUser = userRepository.save(user);
             savedUser.setPassword(encryptDecrypt.decrypt(savedUser.getPassword()));
+            Set<PaymentCard> savedPaymentCards = savedUser.getPaymentCards();
+            Set<PaymentCard> savedEncryptedPaymentCards = new HashSet<PaymentCard>();
+            for(PaymentCard paymentCard : savedPaymentCards) {
+                paymentCard.setCard_Number(encryptDecrypt.decrypt(paymentCard.getCard_Number()));
+                savedEncryptedPaymentCards.add(paymentCard);
+            }
+            savedUser.setPaymentCards(savedEncryptedPaymentCards);
             //emailService.sendRegistrationEmail(userForm.getEmailID().toLowerCase(), verificationCode);
         }
         catch(DataIntegrityViolationException e) {

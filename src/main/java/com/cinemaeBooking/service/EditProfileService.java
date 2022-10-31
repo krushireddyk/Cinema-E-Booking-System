@@ -87,9 +87,10 @@ public class EditProfileService {
         return userRepository.save(user);
     }
 
-    @Transactional
+    //@Transactional
     public User editUser(String userName, User updatedUser) throws Exception{
         User user = userRepository.findByUserName(userName);
+        User editedUser = null;
         if(updatedUser.getFirstName() != null)
             user.setFirstName(updatedUser.getFirstName());
         if(updatedUser.getLastName() != null)
@@ -100,7 +101,7 @@ public class EditProfileService {
                 user.setPassword(encryptDecrypt.encrypt(updatedUser.getNewPassword()));
             }
             else {
-                throw new CustomErrorsException("password does not match");
+                throw new CustomErrorsException("incorrect password");
             }
         }
         if(updatedUser.getPaymentCards() != null && !updatedUser.getPaymentCards().isEmpty()) {
@@ -109,7 +110,9 @@ public class EditProfileService {
             Set<PaymentCard> updatedPaymentCards = new HashSet<PaymentCard>();
             for(PaymentCard newPaymentCard : newPaymentCards) {
                 for(PaymentCard paymentCard : paymentCards) {
-                    if(newPaymentCard.getCard_Number().equals(paymentCard.getCard_Number())) {
+                    String oldCard_Number = encryptDecrypt.decrypt(paymentCard.getCard_Number());
+                    String newCard_Number = newPaymentCard.getCard_Number();
+                    if(newCard_Number.equals(oldCard_Number)) {
                         PaymentCard tempPaymentCard = paymentCard;
                         paymentCard.setExpiryDate(newPaymentCard.getExpiryDate());
                         if(paymentCard.getAddress() != null && newPaymentCard.getAddress() != null) {
@@ -171,11 +174,39 @@ public class EditProfileService {
         if(updatedUser.isPromotionEnabled() != null && updatedUser.isPromotionEnabled() != user.isPromotionEnabled()) {
             user.setPromotionEnabled(updatedUser.getPromotionEnabled());
         }
-        return userRepository.save(user);
+
+        
+        editedUser = userRepository.save(user);
+        Set<PaymentCard> savedPaymentCards = editedUser.getPaymentCards();
+        Set<PaymentCard> savedDecryptedPaymentCards = new HashSet<PaymentCard>();
+        for(PaymentCard paymentCard : savedPaymentCards) {
+            PaymentCard paymentCardDecrypted = new PaymentCard();
+            paymentCardDecrypted.setAddress(paymentCard.getAddress());
+            paymentCardDecrypted.setCard_Number(encryptDecrypt.decrypt(paymentCard.getCard_Number()));
+            paymentCardDecrypted.setExpiryDate(paymentCard.getExpiryDate());
+            paymentCardDecrypted.setPaymentID(paymentCard.getPaymentID());
+            savedDecryptedPaymentCards.add(paymentCardDecrypted);
+        }
+        editedUser.setPaymentCards(savedDecryptedPaymentCards);
+        return editedUser;
     }
 
-    @Transactional
+    //@Transactional
     public User getUser(String userName) {
-        return userRepository.findByUserName(userName);
+        User getUser = userRepository.findByUserName(userName);
+        System.out.println(getUser.getPassword());
+        Set<PaymentCard> savedPaymentCards = getUser.getPaymentCards();
+        Set<PaymentCard> savedDecryptedPaymentCards = new HashSet<PaymentCard>();
+        for(PaymentCard paymentCard : savedPaymentCards) {
+            PaymentCard paymentCardDecrypted = new PaymentCard();
+            paymentCardDecrypted.setAddress(paymentCard.getAddress());
+            paymentCardDecrypted.setCard_Number(encryptDecrypt.decrypt(paymentCard.getCard_Number()));
+            paymentCardDecrypted.setExpiryDate(paymentCard.getExpiryDate());
+            paymentCardDecrypted.setPaymentID(paymentCard.getPaymentID());
+            savedDecryptedPaymentCards.add(paymentCardDecrypted);
+        }
+        getUser.setPaymentCards(savedDecryptedPaymentCards);
+        getUser.setPassword(encryptDecrypt.decrypt(getUser.getPassword()));
+        return getUser;
     }
 }
