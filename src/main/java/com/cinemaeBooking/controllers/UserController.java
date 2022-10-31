@@ -77,10 +77,19 @@ public class UserController
 		return un;
     }
 	@RequestMapping(value = "/verifyverificationcode",method=RequestMethod.PUT)
-	public void verifyVerificationCode(@RequestBody User user)
+	public ResponseEntity<?>  verifyVerificationCode(@RequestBody User user)
 	{
 		System.out.println(user.getUserName()+user.getVerificationCode());
-		userServiceImplementation.verifyVerificationCode(user);
+		int status = userServiceImplementation.verifyVerificationCode(user);
+		RStatus rstatus = new RStatus();
+		if(status == 0) {
+			rstatus.setStatusCode(400);
+			rstatus.setStatusMessage("Invalid verfication details: userName or verification Code");
+			return new ResponseEntity<RStatus>(rstatus, HttpStatus.BAD_REQUEST);
+		}
+		rstatus.setStatusCode(200);
+		rstatus.setStatusMessage("User Verification successful");
+		return new ResponseEntity<RStatus>(rstatus, HttpStatus.OK);
 		
 	}
 }

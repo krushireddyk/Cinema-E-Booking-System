@@ -121,20 +121,25 @@ public class UserServiceImplementation implements UserService
 	}
 
 	@Override
-	public void verifyVerificationCode(User user) 
+	public int verifyVerificationCode(User user) 
 	{
 		User updatedUser = new User();
 		try 
 		{
 			PreparedStatement statement = connection.prepareStatement("update user set statusID=1 where UserName='"+user.getUserName()+"' and verificationCode='"+user.getVerificationCode()+"'");
 			int resultSet = statement.executeUpdate();
+
 			System.out.println(resultSet);
+			if(resultSet > 0) {
+				return 1;
+			}
 			
 		} 
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
+		return 0;
 
 	}
 }
