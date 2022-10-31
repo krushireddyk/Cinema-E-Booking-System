@@ -114,6 +114,9 @@ public class Registration {
                 billingAddress.setPaymentCard(paymentCard);
                 paymentCard.setAddress(billingAddress);
                 paymentCard.setUser(user);
+                String expDate = paymentCard.getExpiryDate();
+                expDate=expDate+"-01";
+                paymentCard.setExpiryDate(expDate);
                 paymentCards.add(paymentCard);
             }
             user.setPaymentCards(paymentCards);
