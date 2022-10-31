@@ -76,7 +76,7 @@ public class EmailService
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
             message.setTo(email);
             message.setFrom(new InternetAddress("jhr2k64@gmail.com"));
-            message.setSubject("Reset your password");
+            message.setSubject("Reset your password with: "+verificationCode);
             message.setSentDate(new Date());
             message.setText(emailContents, true);
         };
