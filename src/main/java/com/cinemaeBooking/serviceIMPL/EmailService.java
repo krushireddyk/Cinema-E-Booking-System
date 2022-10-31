@@ -70,13 +70,13 @@ public class EmailService
     {
     	Context context = new Context();
         context.setVariable("code", verificationCode);
-        String emailContents = templateEngine.process("verifyAccount", context);
+        String emailContents = templateEngine.process("forgotPassword", context);
         
         MimeMessagePreparator preparator = mimeMessage -> {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
             message.setTo(email);
             message.setFrom(new InternetAddress("jhr2k64@gmail.com"));
-            message.setSubject("change your password");
+            message.setSubject("Reset your password");
             message.setSentDate(new Date());
             message.setText(emailContents, true);
         };
