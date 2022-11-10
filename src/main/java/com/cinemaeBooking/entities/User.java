@@ -44,6 +44,9 @@ public class User
 
 	@Transient
 	private String newPassword;
+
+	@Transient
+	private RStatus rstatus;
     
 	public Integer getUserID() {
 		return userID;
@@ -149,6 +152,14 @@ public class User
 
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
+	}
+
+	public RStatus getRstatus() {
+		return this.rstatus;
+	}
+
+	public void setRstatus(RStatus rstatus) {
+		this.rstatus = rstatus;
 	}
 
 }
