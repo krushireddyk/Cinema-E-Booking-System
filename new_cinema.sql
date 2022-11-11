@@ -394,3 +394,24 @@ INSERT INTO `cinema`.`usertype`
 VALUES
 (2,
 'Customer');
+
+ALTER TABLE `cinema`.`showdetails` 
+DROP FOREIGN KEY `fk_ScreenID`;
+ALTER TABLE `cinema`.`showdetails` 
+DROP COLUMN `ScreenID`,
+DROP INDEX `fk_ScreenID` ;
+;
+
+
+ALTER TABLE `cinema`.`screen` 
+ADD COLUMN `ShowID` INT NULL AFTER `NumberOfSeats`;
+
+ALTER TABLE `cinema`.`screen` 
+ADD INDEX `fk_screen_showid_idx` (`ShowID` ASC) VISIBLE;
+;
+ALTER TABLE `cinema`.`screen` 
+ADD CONSTRAINT `fk_screen_showid`
+  FOREIGN KEY (`ShowID`)
+  REFERENCES `cinema`.`showdetails` (`ShowID`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;

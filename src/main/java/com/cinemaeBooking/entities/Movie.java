@@ -1,12 +1,15 @@
 package com.cinemaeBooking.entities;
 
 import java.sql.Blob;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -32,6 +35,9 @@ public class Movie {
     private Integer rating;
     @Transient
     private RStatus rStatus;
+
+    @OneToMany(mappedBy = "movie", cascade=CascadeType.ALL)
+    private Set<ShowDetails> showdetails;
 
     public Integer getMovieID() {
         return this.movieID;
@@ -127,6 +133,14 @@ public class Movie {
 
     public void setRStatus(RStatus rStatus) {
         this.rStatus = rStatus;
+    }
+
+    public Set<ShowDetails> getShowdetails() {
+        return this.showdetails;
+    }
+
+    public void setShowdetails(Set<ShowDetails> showdetails) {
+        this.showdetails = showdetails;
     }
 
 }
