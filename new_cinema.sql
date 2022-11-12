@@ -415,3 +415,6 @@ ADD CONSTRAINT `fk_screen_showid`
   REFERENCES `cinema`.`showdetails` (`ShowID`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
+
+ALTER TABLE `cinema`.`movie` 
+ADD UNIQUE INDEX `Title_UNIQUE` (`Title` ASC) VISIBLE;
