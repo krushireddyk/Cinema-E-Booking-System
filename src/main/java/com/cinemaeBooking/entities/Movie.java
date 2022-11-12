@@ -1,6 +1,5 @@
 package com.cinemaeBooking.entities;
 
-import java.sql.Blob;
 import java.util.Set;
 
 import javax.persistence.CascadeType;

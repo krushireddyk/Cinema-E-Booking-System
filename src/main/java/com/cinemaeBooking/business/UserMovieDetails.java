@@ -49,4 +49,16 @@ public class UserMovieDetails {
         moviesList = userMovieService.getMovieByCategory(category);
         return moviesList;
     }
+
+    public Set<Movie> searchMovieByTitle(String title) {
+        Set<Movie> moviesList = new HashSet<Movie>();
+        moviesList = userMovieService.searchMovieByTitle(title);
+        return moviesList;
+    }
+
+    public Set<Movie> searchMovieByCategory(String category) {
+        Set<Movie> moviesList = new HashSet<Movie>();
+        moviesList = userMovieService.searchMovieByCategory(category);
+        return moviesList;
+    }
 }

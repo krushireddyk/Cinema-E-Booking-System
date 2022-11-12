@@ -3,20 +3,14 @@ package com.cinemaeBooking.business;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cinemaeBooking.entities.BillingAddress;
-import com.cinemaeBooking.entities.HomeAddress;
 import com.cinemaeBooking.entities.PaymentCard;
 import com.cinemaeBooking.entities.User;
 import com.cinemaeBooking.exception.CustomErrorsException;
-import com.cinemaeBooking.repository.UserRepository;
 import com.cinemaeBooking.service.EditProfileService;
 import com.cinemaeBooking.service.EncryptDecrypt;
-import com.cinemaeBooking.serviceIMPL.EmailService;
 
 @Service
 public class EditProfileDetails {

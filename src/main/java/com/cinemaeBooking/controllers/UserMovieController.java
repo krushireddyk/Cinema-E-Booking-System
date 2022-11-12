@@ -141,4 +141,46 @@ public class UserMovieController {
          }
         return new ResponseEntity<Set<Movie>>(moviesList, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/searchByTitle/{title}", method = RequestMethod.GET)
+    public ResponseEntity<?> searchMovieByTitle(@PathVariable String title) {
+        Set<Movie> moviesList = new HashSet<Movie>();
+        moviesList = userMovieDetails.searchMovieByTitle(title);
+        if(moviesList.isEmpty()) {
+            RStatus status = new RStatus();
+            status.setStatusCode(400);
+            status.setStatusMessage("Empty movie list");
+            return new ResponseEntity<RStatus>(status, HttpStatus.BAD_REQUEST);
+        }
+        RStatus status = new RStatus();
+        status.setStatusCode(200);
+        status.setStatusMessage("Search movies by title");
+        Set<Movie> moviesStatusList = new HashSet<Movie>();
+        for(Movie movie : moviesList){
+            movie.setRStatus(status);
+            moviesStatusList.add(movie);
+         }
+        return new ResponseEntity<Set<Movie>>(moviesList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/searchByCategory/{category}", method = RequestMethod.GET)
+    public ResponseEntity<?> searchMovieByCategory(@PathVariable String category) {
+        Set<Movie> moviesList = new HashSet<Movie>();
+        moviesList = userMovieDetails.searchMovieByCategory(category);
+        if(moviesList.isEmpty()) {
+            RStatus status = new RStatus();
+            status.setStatusCode(400);
+            status.setStatusMessage("Empty movie list");
+            return new ResponseEntity<RStatus>(status, HttpStatus.BAD_REQUEST);
+        }
+        RStatus status = new RStatus();
+        status.setStatusCode(200);
+        status.setStatusMessage("Search movies by category");
+        Set<Movie> moviesStatusList = new HashSet<Movie>();
+        for(Movie movie : moviesList){
+            movie.setRStatus(status);
+            moviesStatusList.add(movie);
+         }
+        return new ResponseEntity<Set<Movie>>(moviesList, HttpStatus.OK);
+    }
 }

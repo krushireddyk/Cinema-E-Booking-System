@@ -13,7 +13,6 @@ import com.cinemaeBooking.business.EditProfileDetails;
 import com.cinemaeBooking.entities.RStatus;
 import com.cinemaeBooking.entities.User;
 import com.cinemaeBooking.exception.CustomErrorsException;
-import com.cinemaeBooking.service.EditProfileService;
 import com.cinemaeBooking.service.EncryptDecrypt;
 import com.cinemaeBooking.serviceIMPL.EmailService;
 

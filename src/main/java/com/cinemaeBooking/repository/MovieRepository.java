@@ -27,4 +27,8 @@ public interface MovieRepository extends CrudRepository<Movie, Integer>  {
     public Movie findByTitle(String title);
 
     public Set<Movie> findByCategory(String category);
+
+    public Set<Movie> findByTitleContaining(String title);
+
+    public Set<Movie> findByCategoryContaining(String title);
 }

@@ -57,4 +57,18 @@ public class UserMovieService {
         moviesList = movieRepository.findByCategory(category);
         return moviesList;
     }
+
+    @Transactional
+    public Set<Movie> searchMovieByTitle(String title) {
+        Set<Movie> moviesList = new HashSet<Movie>();
+        moviesList = movieRepository.findByTitleContaining(title);
+        return moviesList;
+    }
+
+    @Transactional
+    public Set<Movie> searchMovieByCategory(String category) {
+        Set<Movie> moviesList = new HashSet<Movie>();
+        moviesList = movieRepository.findByCategoryContaining(category);
+        return moviesList;
+    }
 }
