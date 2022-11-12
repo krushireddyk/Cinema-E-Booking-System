@@ -82,6 +82,23 @@ public class EmailService
         };
         mailSender.send(preparator);
     }
+    
+    public void sendPromotionalEmail(String email, String promotionCode)
+    {
+    	Context context = new Context();
+        context.setVariable("code", promotionCode);
+        String emailContents = templateEngine.process("NewPromotion", context);
+        
+        MimeMessagePreparator preparator = mimeMessage -> {
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+            message.setTo(email);
+            message.setFrom(new InternetAddress("jhr6066@gmail.com"));
+            message.setSubject("use the discount and book your tickets "+promotionCode);
+            message.setSentDate(new Date());
+            message.setText(emailContents, true);
+        };
+        mailSender.send(preparator);
+    }
 
 }
 
