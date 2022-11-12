@@ -19,4 +19,34 @@ public class UserMovieDetails {
         moviesList = userMovieService.getAllMovies();
         return moviesList;
     }
+
+    public Set<Movie> getCurrentlyAndComingSoonMovies() {
+        Set<Movie> moviesList = new HashSet<Movie>();
+        moviesList = userMovieService.getCurrentlyAndComingSoonMovies();
+        return moviesList;
+    }
+
+    public Set<Movie> getComingSoonMovies() {
+        Set<Movie> moviesList = new HashSet<Movie>();
+        moviesList = userMovieService.getComingSoonMovies();
+        return moviesList;
+    }
+
+    public Set<Movie> getCurrentMovies() {
+        Set<Movie> moviesList = new HashSet<Movie>();
+        moviesList = userMovieService.getCurrentMovies();
+        return moviesList;
+    }
+
+    public Movie getMovieByTitle(String title) {
+        Movie movie = null;
+        movie = userMovieService.getMovieByTitle(title);
+        return movie;
+    }
+
+    public Set<Movie> getMovieByCategory(String category) {
+        Set<Movie> moviesList = new HashSet<Movie>();
+        moviesList = userMovieService.getMovieByCategory(category);
+        return moviesList;
+    }
 }

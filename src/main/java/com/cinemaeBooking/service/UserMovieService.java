@@ -22,4 +22,39 @@ public class UserMovieService {
         moviesList = movieRepository.findAll();
         return moviesList;
     }
+
+    @Transactional
+    public Set<Movie> getCurrentlyAndComingSoonMovies() {
+        Set<Movie> moviesList = new HashSet<Movie>();
+        moviesList = movieRepository.findAllCurrentlyRunningAndComingSoonMovies();
+        return moviesList;
+    }
+
+    @Transactional
+    public Set<Movie> getComingSoonMovies() {
+        Set<Movie> moviesList = new HashSet<Movie>();
+        moviesList = movieRepository.findAllComingSoonMovies();
+        return moviesList;
+    }
+
+    @Transactional
+    public Set<Movie> getCurrentMovies() {
+        Set<Movie> moviesList = new HashSet<Movie>();
+        moviesList = movieRepository.findAllCurrentMovies();
+        return moviesList;
+    }
+
+    @Transactional
+    public Movie getMovieByTitle(String title) {
+        Movie movie = null;
+        movie = movieRepository.findByTitle(title);
+        return movie;
+    }
+
+    @Transactional
+    public Set<Movie> getMovieByCategory(String category) {
+        Set<Movie> moviesList = new HashSet<Movie>();
+        moviesList = movieRepository.findByCategory(category);
+        return moviesList;
+    }
 }
