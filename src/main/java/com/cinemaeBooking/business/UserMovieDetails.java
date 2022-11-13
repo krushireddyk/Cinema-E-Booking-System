@@ -4,15 +4,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import com.cinemaeBooking.entities.Movie;
+import com.cinemaeBooking.entities.RStatus;
+import com.cinemaeBooking.exception.CustomErrorsException;
+import com.cinemaeBooking.repository.MovieRepository;
 import com.cinemaeBooking.service.UserMovieService;
 
 @Service
 public class UserMovieDetails {
     @Autowired
     UserMovieService userMovieService;
+    
+    @Autowired
+    MovieRepository movieRepository;
 
     public Set<Movie> getAllMovies() {
         Set<Movie> moviesList = new HashSet<Movie>();
@@ -61,4 +69,5 @@ public class UserMovieDetails {
         moviesList = userMovieService.searchMovieByCategory(category);
         return moviesList;
     }
+    
 }
