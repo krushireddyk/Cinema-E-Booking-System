@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cinemaeBooking.business.UserMovieDetails;
 import com.cinemaeBooking.entities.Movie;
+import com.cinemaeBooking.entities.MoviesList;
 import com.cinemaeBooking.entities.RStatus;
 
 @RestController
@@ -35,12 +36,10 @@ public class UserMovieController {
         RStatus status = new RStatus();
         status.setStatusCode(200);
         status.setStatusMessage("Get All Movie Details");
-        Set<Movie> moviesStatusList = new HashSet<Movie>();
-        for(Movie movie : moviesList){
-            movie.setRStatus(status);
-            moviesStatusList.add(movie);
-         }
-        return new ResponseEntity<Set<Movie>>(moviesList, HttpStatus.OK);
+        MoviesList moviesList2 = new MoviesList();
+        moviesList2.setMoviesList(moviesList);
+        moviesList2.setRStatus(status);
+        return new ResponseEntity<MoviesList>(moviesList2, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/movies/currentAndComingSoon", method = RequestMethod.GET)
@@ -56,12 +55,10 @@ public class UserMovieController {
         RStatus status = new RStatus();
         status.setStatusCode(200);
         status.setStatusMessage("Get Current and Coming Soon Movie Details");
-        Set<Movie> moviesStatusList = new HashSet<Movie>();
-        for(Movie movie : moviesList){
-            movie.setRStatus(status);
-            moviesStatusList.add(movie);
-         }
-        return new ResponseEntity<Set<Movie>>(moviesList, HttpStatus.OK);
+        MoviesList moviesList2 = new MoviesList();
+        moviesList2.setMoviesList(moviesList);
+        moviesList2.setRStatus(status);
+        return new ResponseEntity<MoviesList>(moviesList2, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/movies/comingSoon", method = RequestMethod.GET)
@@ -77,12 +74,11 @@ public class UserMovieController {
         RStatus status = new RStatus();
         status.setStatusCode(200);
         status.setStatusMessage("Get Coming Soon Movie Details");
-        Set<Movie> moviesStatusList = new HashSet<Movie>();
-        for(Movie movie : moviesList){
-            movie.setRStatus(status);
-            moviesStatusList.add(movie);
-         }
-        return new ResponseEntity<Set<Movie>>(moviesList, HttpStatus.OK);
+        MoviesList moviesList2 = new MoviesList();
+        moviesList2.setMoviesList(moviesList);
+        moviesList2.setRStatus(status);
+        
+        return new ResponseEntity<MoviesList>(moviesList2, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/movies/current", method = RequestMethod.GET)
@@ -98,12 +94,10 @@ public class UserMovieController {
         RStatus status = new RStatus();
         status.setStatusCode(200);
         status.setStatusMessage("Get Current Movie Details");
-        Set<Movie> moviesStatusList = new HashSet<Movie>();
-        for(Movie movie : moviesList){
-            movie.setRStatus(status);
-            moviesStatusList.add(movie);
-         }
-        return new ResponseEntity<Set<Movie>>(moviesList, HttpStatus.OK);
+        MoviesList moviesList2 = new MoviesList();
+        moviesList2.setMoviesList(moviesList);
+        moviesList2.setRStatus(status);
+        return new ResponseEntity<MoviesList>(moviesList2, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/movieByTitle/{title}", method = RequestMethod.GET)
@@ -118,6 +112,7 @@ public class UserMovieController {
         RStatus status = new RStatus();
         status.setStatusCode(200);
         status.setStatusMessage("Movie Found");
+        movie.setRStatus(status);
         return new ResponseEntity<Movie>(movie, HttpStatus.OK);
     }
 
@@ -134,12 +129,10 @@ public class UserMovieController {
         RStatus status = new RStatus();
         status.setStatusCode(200);
         status.setStatusMessage("Get movies by category");
-        Set<Movie> moviesStatusList = new HashSet<Movie>();
-        for(Movie movie : moviesList){
-            movie.setRStatus(status);
-            moviesStatusList.add(movie);
-         }
-        return new ResponseEntity<Set<Movie>>(moviesList, HttpStatus.OK);
+        MoviesList moviesList2 = new MoviesList();
+        moviesList2.setMoviesList(moviesList);
+        moviesList2.setRStatus(status);
+        return new ResponseEntity<MoviesList>(moviesList2, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/searchByTitle/{title}", method = RequestMethod.GET)
@@ -155,12 +148,10 @@ public class UserMovieController {
         RStatus status = new RStatus();
         status.setStatusCode(200);
         status.setStatusMessage("Search movies by title");
-        Set<Movie> moviesStatusList = new HashSet<Movie>();
-        for(Movie movie : moviesList){
-            movie.setRStatus(status);
-            moviesStatusList.add(movie);
-         }
-        return new ResponseEntity<Set<Movie>>(moviesList, HttpStatus.OK);
+        MoviesList moviesList2 = new MoviesList();
+        moviesList2.setMoviesList(moviesList);
+        moviesList2.setRStatus(status);
+        return new ResponseEntity<MoviesList>(moviesList2, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/searchByCategory/{category}", method = RequestMethod.GET)
@@ -176,11 +167,9 @@ public class UserMovieController {
         RStatus status = new RStatus();
         status.setStatusCode(200);
         status.setStatusMessage("Search movies by category");
-        Set<Movie> moviesStatusList = new HashSet<Movie>();
-        for(Movie movie : moviesList){
-            movie.setRStatus(status);
-            moviesStatusList.add(movie);
-         }
-        return new ResponseEntity<Set<Movie>>(moviesList, HttpStatus.OK);
+        MoviesList moviesList2 = new MoviesList();
+        moviesList2.setMoviesList(moviesList);
+        moviesList2.setRStatus(status);
+        return new ResponseEntity<MoviesList>(moviesList2, HttpStatus.OK);
     }
 }
