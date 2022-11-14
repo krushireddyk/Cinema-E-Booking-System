@@ -431,3 +431,10 @@ ADD CONSTRAINT `fk_screenID`
   REFERENCES `cinema`.`screen` (`ScreenID`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
+
+ALTER TABLE `cinema`.`screen` 
+DROP FOREIGN KEY `fk_screen_showid`;
+ALTER TABLE `cinema`.`screen` 
+DROP COLUMN `ShowID`,
+DROP INDEX `fk_screen_showid_idx` ;
+;
