@@ -94,6 +94,9 @@ public class AdminMovieService
 			showDetail.setShowDuration(show.getShowDuration());
 			showDetail.setShowTime(show.getShowTime());
 			Screen screen = screenRepository.findByScreenID(show.getScreen().getScreenID());
+			if(screen == null) {
+				throw new CustomErrorsException("Please provide valid/existing screen details");
+			}
 			showDetail.setScreen(screen);
 			showDetail.setMovie(movie);
 			updatedShowDetails.add(showDetail);
