@@ -418,3 +418,16 @@ ADD CONSTRAINT `fk_screen_showid`
 
 ALTER TABLE `cinema`.`movie` 
 ADD UNIQUE INDEX `Title_UNIQUE` (`Title` ASC) VISIBLE;
+
+ALTER TABLE `cinema`.`showdetails` 
+ADD COLUMN `screenID` VARCHAR(225) NULL AFTER `showDuration`;
+
+ALTER TABLE `cinema`.`showdetails` 
+ADD INDEX `fk_screenID_idx` (`screenID` ASC) VISIBLE;
+;
+ALTER TABLE `cinema`.`showdetails` 
+ADD CONSTRAINT `fk_screenID`
+  FOREIGN KEY (`screenID`)
+  REFERENCES `cinema`.`screen` (`ScreenID`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;

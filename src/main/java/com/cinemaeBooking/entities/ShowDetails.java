@@ -28,7 +28,10 @@ public class ShowDetails {
 	@JoinColumn(name = "movieID", referencedColumnName = "movieID")
     private Movie movie;
 
-    @OneToOne(mappedBy = "showdetails", cascade = CascadeType.ALL)
+    //@OneToOne(cascade=CascadeType.ALL)
+	//@JoinColumn(name = "screenID", referencedColumnName = "screenID")
+    @ManyToOne(optional = true)
+	@JoinColumn(name ="screenID")
     private Screen screen;
 
     public Integer getShowID() {

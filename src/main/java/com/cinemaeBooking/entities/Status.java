@@ -20,7 +20,7 @@ public class Status {
     private String status;
 
     //@OneToOne(mappedBy = "status", cascade=CascadeType.ALL, orphanRemoval = true)
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "usertype")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "status")
     private Set<User> users;
 
     public Integer getStatusID() {
