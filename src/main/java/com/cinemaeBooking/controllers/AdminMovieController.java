@@ -1,5 +1,7 @@
 package com.cinemaeBooking.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cinemaeBooking.entities.Movie;
 import com.cinemaeBooking.entities.Promotion;
 import com.cinemaeBooking.entities.RStatus;
+import com.cinemaeBooking.entities.User;
 import com.cinemaeBooking.exception.CustomErrorsException;
 import com.cinemaeBooking.service.AdminMovieService;
 import com.cinemaeBooking.service.PromotionService;
@@ -113,4 +116,17 @@ public class AdminMovieController {
         movie.setRStatus(status);
         return new ResponseEntity<Movie>(movie, HttpStatus.OK);
     }
+	
+	@RequestMapping(value = "/getUsers", method = RequestMethod.GET)
+	public List<User> getUsers()
+	{
+		return adminMovieService.getAllUsers();
+	}
+	
+	@RequestMapping(value = "/getPromotions", method = RequestMethod.GET)
+	public List<Promotion> getPromotions()
+	{
+		return adminMovieService.getAllPromotions();
+	}
+	
 }

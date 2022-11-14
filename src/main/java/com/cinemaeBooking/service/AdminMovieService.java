@@ -1,6 +1,7 @@
 package com.cinemaeBooking.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import com.cinemaeBooking.entities.Movie;
+import com.cinemaeBooking.entities.Promotion;
 import com.cinemaeBooking.entities.Screen;
 import com.cinemaeBooking.entities.ShowDetails;
+import com.cinemaeBooking.entities.User;
 import com.cinemaeBooking.exception.CustomErrorsException;
 import com.cinemaeBooking.repository.MovieRepository;
+import com.cinemaeBooking.repository.PromotionRepository;
 import com.cinemaeBooking.repository.ScreenRepository;
+import com.cinemaeBooking.repository.UserRepository;
 
 @Service
 public class AdminMovieService 
@@ -24,6 +29,12 @@ public class AdminMovieService
 
 	@Autowired
 	ScreenRepository screenRepository;
+	
+	@Autowired
+	UserRepository userRepository;
+	
+	@Autowired
+	PromotionRepository promotionRepository;
 	
 	@Transactional
 	public Movie addMovie(Movie addMovieForm, BindingResult bindingResult) throws Exception
@@ -106,4 +117,17 @@ public class AdminMovieService
 		savedMovie = movieRepository.save(movie);
 		return savedMovie;
 	}
+	
+	@Transactional
+	public List<User> getAllUsers()
+	{
+		return userRepository.findAll();
+	}
+	
+	@Transactional
+	public List<Promotion> getAllPromotions()
+	{
+		return promotionRepository.findAll();
+	}
+	
 }
