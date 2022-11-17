@@ -129,4 +129,29 @@ public class AdminMovieController {
 		return adminMovieService.getAllPromotions();
 	}
 	
+	@RequestMapping(value = "/deletePromotion/{promotionCode}", method = RequestMethod.DELETE)
+	public String deletePromotion(@PathVariable String promotionCode)
+	{
+		if(adminMovieService.deletePromotion(promotionCode)==true)
+		{
+			return promotionCode+" deleted successfully";
+		}
+		else
+		{
+			return promotionCode+" does not exists";
+		}
+	}
+	
+	@RequestMapping(value = "/deleteMovie/{title}", method = RequestMethod.DELETE)
+	public String deleteMovie(@PathVariable String title)
+	{
+		if(adminMovieService.deleteMovie(title) == true)
+		{
+			return title+" deleted successfully";
+		}
+		else 
+		{
+			return title+" does not exists";
+		}
+	}
 }

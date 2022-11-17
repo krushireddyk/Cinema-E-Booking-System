@@ -49,7 +49,7 @@ public class PromotionService {
 				
 				while(resultSet.next())
 				{		
-					emailService.sendPromotionalEmail(resultSet.toString(), savedPromotion.getPromotionCode());
+					emailService.sendPromotionalEmail(resultSet.getString(1), savedPromotion.getPromotionCode());
 				}
 			} 
 			catch (SQLException e) 
@@ -63,5 +63,10 @@ public class PromotionService {
 		}		
 		return savedPromotion;
 	}
+	
+	/*public void deletePromotion(String promotionCode)
+	{
+		promotionRepository.delete(promotionCode);
+	}*/
 
 }
