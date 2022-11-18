@@ -1,5 +1,6 @@
 package com.cinemaeBooking.controllers;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,4 +155,11 @@ public class AdminMovieController {
 			return title+" does not exists";
 		}
 	}
+	@RequestMapping(value = "/suspendUser/{userName}", method = RequestMethod.PUT)
+	public String suspendUser(@PathVariable String userName) throws SQLException
+	{
+		adminMovieService.suspendUser(userName);
+		return "User Suspended Successfully";
+	}
+	
 }

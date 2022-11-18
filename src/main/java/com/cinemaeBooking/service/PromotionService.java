@@ -64,9 +64,4 @@ public class PromotionService {
 		return savedPromotion;
 	}
 	
-	/*public void deletePromotion(String promotionCode)
-	{
-		promotionRepository.delete(promotionCode);
-	}*/
-
 }

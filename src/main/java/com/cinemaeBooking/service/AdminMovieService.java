@@ -1,5 +1,8 @@
 package com.cinemaeBooking.service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import com.cinemaeBooking.dbutil.DbUtil;
 import com.cinemaeBooking.entities.Movie;
 import com.cinemaeBooking.entities.Promotion;
 import com.cinemaeBooking.entities.Screen;
@@ -24,6 +28,7 @@ import com.cinemaeBooking.repository.UserRepository;
 @Service
 public class AdminMovieService 
 {
+	
 	@Autowired
 	MovieRepository movieRepository;
 
@@ -166,8 +171,18 @@ public class AdminMovieService
 	}
 	
 	@Transactional
-	public void suspendUser(String userName)
+	public void suspendUser(String userName) throws SQLException
 	{
-		userRepository.deleteByUserName(userName);	
-	}
+		Connection connection;
+		try
+		{
+			connection = DbUtil.getConnection();
+			PreparedStatement statement = connection.prepareStatement("UPDATE user set StatusID=3 where UserName='"+userName+"' ");
+			statement.execute();
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}		
 }
