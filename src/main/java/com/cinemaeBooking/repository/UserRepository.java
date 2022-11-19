@@ -21,4 +21,6 @@ public interface UserRepository extends CrudRepository<User, Integer>
 	
 	@Query(value = "SELECT * FROM user", nativeQuery = true)
 	public List<User> findAll();
+	
+	public void deleteByUserName(String userName);
 }

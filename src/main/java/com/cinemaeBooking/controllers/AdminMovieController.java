@@ -1,5 +1,6 @@
 package com.cinemaeBooking.controllers;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,6 +131,46 @@ public class AdminMovieController {
 	public List<Promotion> getPromotions()
 	{
 		return adminMovieService.getAllPromotions();
+	}
+	
+	@RequestMapping(value = "/deletePromotion/{promotionCode}", method = RequestMethod.DELETE)
+	public String deletePromotion(@PathVariable String promotionCode)
+	{
+		if(adminMovieService.deletePromotion(promotionCode)==true)
+		{
+			return promotionCode+" deleted successfully";
+		}
+		else
+		{
+			return promotionCode+" does not exists";
+		}
+	}
+	
+	@RequestMapping(value = "/deleteMovie/{title}", method = RequestMethod.DELETE)
+	public String deleteMovie(@PathVariable String title)
+	{
+		if(adminMovieService.deleteMovie(title) == true)
+		{
+			return title+" deleted successfully";
+		}
+		else 
+		{
+			return title+" does not exists";
+		}
+	}
+	
+	@RequestMapping(value = "/suspendUser/{userName}", method = RequestMethod.PUT)
+	public String suspendUser(@PathVariable String userName) throws SQLException
+	{
+		adminMovieService.suspendUser(userName);
+		return "User Suspended Successfully";
+	}
+	
+	@RequestMapping(value = "/sendPromotionalEmail/{promoCode}", method = RequestMethod.POST)
+	public String sendPromotionalEmail(String promoCode)
+	{
+		promotionService.sendPromotionEmail(promoCode);
+		return "Promotional email has been sent Successfully";
 	}
 	
 }

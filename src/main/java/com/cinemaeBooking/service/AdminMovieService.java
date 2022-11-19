@@ -1,6 +1,9 @@
 package com.cinemaeBooking.service;
 
 import java.util.Base64;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import com.cinemaeBooking.dbutil.DbUtil;
 import com.cinemaeBooking.entities.Movie;
 import com.cinemaeBooking.entities.Promotion;
 import com.cinemaeBooking.entities.Screen;
@@ -25,6 +29,7 @@ import com.cinemaeBooking.repository.UserRepository;
 @Service
 public class AdminMovieService 
 {
+	
 	@Autowired
 	MovieRepository movieRepository;
 
@@ -80,25 +85,37 @@ public class AdminMovieService
 	{
 		Movie movie = movieRepository.findByTitle(title);
 		Movie savedMovie = null;
+		
 		Set<ShowDetails> oldShowDetails = movie.getShowdetails();
+		
 		Set<ShowDetails> updatedShowDetails = new HashSet<ShowDetails>();
-		for(ShowDetails show : addMovieForm.getShowdetails()) {
-			for(ShowDetails oldShow : oldShowDetails) {
-				if(show.getScreen() != null){
-					if(show.getScreen().getScreenID() != null) {
-						if(oldShow.getScreen() != null && oldShow.getScreen().getScreenID() != null && oldShow.getScreen().getScreenID().equals(show.getScreen().getScreenID())) {
-							if(oldShow.getShowDate().compareTo(show.getShowDate()) == 0) {
-								if(oldShow.getShowTime().compareTo(show.getShowTime()) == 0){
+		
+		for(ShowDetails show : addMovieForm.getShowdetails()) 
+		{
+			for(ShowDetails oldShow : oldShowDetails) 
+			{
+				if(show.getScreen() != null)
+				{
+					if(show.getScreen().getScreenID() != null) 
+					{
+						if(oldShow.getScreen() != null && oldShow.getScreen().getScreenID() != null && oldShow.getScreen().getScreenID().equals(show.getScreen().getScreenID())) 
+						{
+							if(oldShow.getShowDate().compareTo(show.getShowDate()) == 0) 
+							{
+								if(oldShow.getShowTime().compareTo(show.getShowTime()) == 0)
+								{
 									throw new CustomErrorsException("This show slot is already booked");
 								}
 							}
 						}
-					}
-					else {
+					}					
+					else 
+					{
 						throw new CustomErrorsException("Please provide screen ID");
 					}
-				}
-				else {
+				}				
+				else 
+				{
 					throw new CustomErrorsException("Please provide screen details");
 				}
 			}
@@ -107,7 +124,8 @@ public class AdminMovieService
 			showDetail.setShowDuration(show.getShowDuration());
 			showDetail.setShowTime(show.getShowTime());
 			Screen screen = screenRepository.findByScreenID(show.getScreen().getScreenID());
-			if(screen == null) {
+			if(screen == null) 
+			{
 				throw new CustomErrorsException("Please provide valid/existing screen details");
 			}
 			showDetail.setScreen(screen);
@@ -132,4 +150,41 @@ public class AdminMovieService
 		return promotionRepository.findAll();
 	}
 	
+	@Transactional
+	public boolean deletePromotion(String promotionCode)
+	{
+		if(promotionRepository.findByPromotionCode(promotionCode)==null)
+		{
+			return false;
+		}
+		promotionRepository.deleteByPromotionCode(promotionCode);
+		return true;
+	}
+	
+	@Transactional
+	public boolean deleteMovie(String title)
+	{
+		if(movieRepository.findByTitle(title)==null)
+		{
+			return false;
+		}
+		movieRepository.deleteByTitle(title);
+		return true;
+	}
+	
+	@Transactional
+	public void suspendUser(String userName) throws SQLException
+	{
+		Connection connection;
+		try
+		{
+			connection = DbUtil.getConnection();
+			PreparedStatement statement = connection.prepareStatement("UPDATE user set StatusID=3 where UserName='"+userName+"' ");
+			statement.execute();
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}		
 }
