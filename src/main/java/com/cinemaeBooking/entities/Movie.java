@@ -38,6 +38,9 @@ public class Movie {
     @OneToMany(mappedBy = "movie", cascade=CascadeType.ALL)
     private Set<ShowDetails> showdetails;
 
+    @Transient
+    private String base64;
+
     public Integer getMovieID() {
         return this.movieID;
     }
@@ -140,6 +143,14 @@ public class Movie {
 
     public void setShowdetails(Set<ShowDetails> showdetails) {
         this.showdetails = showdetails;
+    }
+
+    public String getBase64() {
+        return this.base64;
+    }
+
+    public void setBase64(String base64) {
+        this.base64 = base64;
     }
 
 }

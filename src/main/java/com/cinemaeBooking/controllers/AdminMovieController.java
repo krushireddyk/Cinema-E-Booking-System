@@ -43,12 +43,15 @@ public class AdminMovieController {
         	RStatus status = new RStatus();
             status.setStatusCode(400);
             status.setStatusMessage(e.getMessage());
+			return new ResponseEntity<RStatus>(status, HttpStatus.BAD_REQUEST);
         }
     	catch(Exception e)
     	{
+			e.printStackTrace();
     		RStatus status = new RStatus();
             status.setStatusCode(400);
             status.setStatusMessage("Internal Error");
+			return new ResponseEntity<RStatus>(status, HttpStatus.INTERNAL_SERVER_ERROR);
     	}
     	RStatus status = new RStatus();
         status.setStatusCode(200);

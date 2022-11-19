@@ -1,5 +1,6 @@
 package com.cinemaeBooking.service;
 
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,9 +57,10 @@ public class AdminMovieService
 			movie.setSynopsis(addMovieForm.getSynopsis());
 			movie.setReview("Good"); // work on this
 			movie.setTrailerLink(addMovieForm.getTrailerLink());
-			movie.setPicture(addMovieForm.getPicture());
+			String imageData = addMovieForm.getBase64().split(";base64,", 2)[1];
+			byte [] encodedBytes = Base64.getMimeDecoder().decode(imageData);
+			movie.setPicture(encodedBytes);
 			movie.setRating(3); // work on this
-			System.out.println(addMovieForm.getCategory());
 			savedMovie = movieRepository.save(movie);
 		}
 		catch(DataIntegrityViolationException e)
