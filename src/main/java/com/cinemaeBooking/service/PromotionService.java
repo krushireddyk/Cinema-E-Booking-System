@@ -40,7 +40,7 @@ public class PromotionService {
 			
 			savedPromotion = promotionRepository.save(promotion);
 			
-			Connection connection;
+			/*Connection connection;
 			try 
 			{
 				connection = DbUtil.getConnection();
@@ -55,7 +55,7 @@ public class PromotionService {
 			catch (SQLException e) 
 			{
 				e.printStackTrace();
-			}
+			}*/
 		}
 		finally
 		{
@@ -64,4 +64,23 @@ public class PromotionService {
 		return savedPromotion;
 	}
 	
+	public void sendPromotionEmail(String promoCode)
+	{
+		Connection connection;
+		try 
+		{
+			connection = DbUtil.getConnection();
+			PreparedStatement statement = connection.prepareStatement("select EmailID from user where promotionEnabled=1;");
+			ResultSet resultSet = statement.executeQuery();	
+			
+			while(resultSet.next())
+			{		
+				emailService.sendPromotionalEmail(resultSet.getString(1), promoCode);
+			}
+		} 
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
 }

@@ -155,11 +155,19 @@ public class AdminMovieController {
 			return title+" does not exists";
 		}
 	}
+	
 	@RequestMapping(value = "/suspendUser/{userName}", method = RequestMethod.PUT)
 	public String suspendUser(@PathVariable String userName) throws SQLException
 	{
 		adminMovieService.suspendUser(userName);
 		return "User Suspended Successfully";
+	}
+	
+	@RequestMapping(value = "/sendPromotionalEmail/{promoCode}", method = RequestMethod.POST)
+	public String sendPromotionalEmail(String promoCode)
+	{
+		promotionService.sendPromotionEmail(promoCode);
+		return "Promotional email has been sent Successfully";
 	}
 	
 }
