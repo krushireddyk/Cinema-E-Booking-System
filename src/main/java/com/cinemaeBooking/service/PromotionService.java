@@ -83,4 +83,32 @@ public class PromotionService {
 			e.printStackTrace();
 		}
 	}
+	
+	public Promotion editPromotion(Promotion editPromoForm, BindingResult bindingResult)
+	{
+		Promotion promotion = new Promotion();
+		Promotion changedPromotion = null;
+		try
+		{
+			if (bindingResult.hasErrors()) 
+            {
+				return null;
+            }
+			
+			promotionRepository.deleteByPromotionCode(editPromoForm.getPromotionCode());
+			
+			promotion.setPromotionCode(editPromoForm.getPromotionCode());
+			promotion.setPromotional_Value(editPromoForm.getPromotional_Value());
+			promotion.setStartDate(editPromoForm.getStartDate());
+			promotion.setEndDate(editPromoForm.getEndDate());
+			
+			changedPromotion = promotionRepository.save(promotion);
+		}
+		finally
+		{
+			
+		}		
+		return changedPromotion;
+		
+	}
 }
