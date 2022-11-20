@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cinemaeBooking.entities.Movie;
 import com.cinemaeBooking.entities.Promotion;
 import com.cinemaeBooking.entities.RStatus;
+import com.cinemaeBooking.entities.ShowDetails;
 import com.cinemaeBooking.entities.User;
 import com.cinemaeBooking.exception.CustomErrorsException;
 import com.cinemaeBooking.service.AdminMovieService;
@@ -135,6 +136,12 @@ public class AdminMovieController {
 	public List<Promotion> getPromotions()
 	{
 		return adminMovieService.getAllPromotions();
+	}
+	
+	@RequestMapping(value = "/getAllShowDetails/{id}", method = RequestMethod.GET)
+	public List<ShowDetails> getAllShowDetails(@PathVariable int id)
+	{
+		return adminMovieService.getAllShowDetails(id);
 	}
 	
 	@RequestMapping(value = "/deletePromotion/{promotionCode}", method = RequestMethod.DELETE)
