@@ -171,7 +171,7 @@ public class AdminMovieController {
 	}
 	
 	@RequestMapping(value = "/sendPromotionalEmail/{promoCode}", method = RequestMethod.POST)
-	public String sendPromotionalEmail(String promoCode)
+	public String sendPromotionalEmail(@PathVariable String promoCode)
 	{
 		promotionService.sendPromotionEmail(promoCode);
 		return "Promotional email has been sent Successfully";
