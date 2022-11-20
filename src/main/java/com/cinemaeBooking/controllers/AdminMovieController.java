@@ -177,4 +177,35 @@ public class AdminMovieController {
 		return "Promotional email has been sent Successfully";
 	}
 	
+	@RequestMapping(value = "/editPromotion", method = RequestMethod.PUT)
+	public ResponseEntity<?> editPromotion(@RequestBody Promotion editPromoForm, BindingResult bindingResult)
+	{
+		Promotion promotion = new Promotion();
+		try
+		{
+			promotion = promotionService.editPromotion(editPromoForm, bindingResult);		
+		}
+		catch (CustomErrorsException e) 
+    	{
+        	RStatus status = new RStatus();
+            status.setStatusCode(400);
+            status.setStatusMessage(e.getMessage());
+
+			return new ResponseEntity<RStatus>(status, HttpStatus.BAD_REQUEST);
+        }
+		catch(Exception e)
+    	{
+    		RStatus status = new RStatus();
+            status.setStatusCode(400);
+            status.setStatusMessage("Internal Error");
+
+			return new ResponseEntity<RStatus>(status, HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
+		RStatus status = new RStatus();
+        status.setStatusCode(200);
+        status.setStatusMessage("Promo edited Successfully");
+        
+        promotion.setRStatus(status);
+        return new ResponseEntity<Promotion>(promotion, HttpStatus.OK);
+	}
 }

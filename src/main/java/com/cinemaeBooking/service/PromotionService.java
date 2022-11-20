@@ -99,8 +99,8 @@ public class PromotionService {
 	
 	public Promotion editPromotion(Promotion editPromoForm, BindingResult bindingResult)
 	{
-		Promotion promotion = new Promotion();
 		Promotion changedPromotion = null;
+		Promotion existingPromotion;
 		try
 		{
 			if (bindingResult.hasErrors()) 
@@ -108,14 +108,13 @@ public class PromotionService {
 				return null;
             }
 			
-			promotionRepository.deleteByPromotionCode(editPromoForm.getPromotionCode());
+			existingPromotion = promotionRepository.findByPromotionCode(editPromoForm.getPromotionCode());
 			
-			promotion.setPromotionCode(editPromoForm.getPromotionCode());
-			promotion.setPromotional_Value(editPromoForm.getPromotional_Value());
-			promotion.setStartDate(editPromoForm.getStartDate());
-			promotion.setEndDate(editPromoForm.getEndDate());
-			
-			changedPromotion = promotionRepository.save(promotion);
+			existingPromotion.setPromotionCode(editPromoForm.getPromotionCode());//only if we get the promo code in edit promo form
+			existingPromotion.setStartDate(editPromoForm.getStartDate());
+			existingPromotion.setEndDate(editPromoForm.getEndDate());
+			existingPromotion.setPromotional_Value(editPromoForm.getPromotional_Value());			
+			changedPromotion = promotionRepository.save(existingPromotion);
 		}
 		finally
 		{
