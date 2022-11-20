@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name="promotion")
 public class Promotion {
@@ -18,7 +20,9 @@ public class Promotion {
 	private int promotionId;
 	
 	private String promotionCode;
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date startDate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 	private float promotional_Value;
 	

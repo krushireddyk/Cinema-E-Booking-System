@@ -5,11 +5,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import com.cinemaeBooking.dbutil.DbUtil;
 import com.cinemaeBooking.entities.Promotion;
+import com.cinemaeBooking.exception.CustomErrorsException;
 import com.cinemaeBooking.repository.PromotionRepository;
 import com.cinemaeBooking.serviceIMPL.EmailService;
 
@@ -22,7 +24,7 @@ public class PromotionService {
 	@Autowired
 	EmailService emailService;
 	
-	public Promotion addPromotion(Promotion addPromoForm, BindingResult bindingResult)
+	public Promotion addPromotion(Promotion addPromoForm, BindingResult bindingResult) throws CustomErrorsException
 	{
 		Promotion promotion = new Promotion();
 		Promotion savedPromotion = null;
@@ -33,6 +35,9 @@ public class PromotionService {
 				return null;
             }
 			
+			if(addPromoForm.getStartDate().compareTo(addPromoForm.getEndDate()) > 0) {
+				throw new CustomErrorsException("End date must be after start date");
+			}
 			promotion.setPromotionCode(addPromoForm.getPromotionCode());
 			promotion.setPromotional_Value(addPromoForm.getPromotional_Value());
 			promotion.setStartDate(addPromoForm.getStartDate());
@@ -56,6 +61,14 @@ public class PromotionService {
 			{
 				e.printStackTrace();
 			}*/
+		}
+		catch(DataIntegrityViolationException e)
+		{
+			if(e.getLocalizedMessage().contains("PromotionCode"))
+			{
+                throw new CustomErrorsException("Promo code already exists");
+			}
+			
 		}
 		finally
 		{

@@ -44,12 +44,15 @@ public class AdminMovieController {
         	RStatus status = new RStatus();
             status.setStatusCode(400);
             status.setStatusMessage(e.getMessage());
+			return new ResponseEntity<RStatus>(status, HttpStatus.BAD_REQUEST);
         }
     	catch(Exception e)
     	{
+			e.printStackTrace();
     		RStatus status = new RStatus();
             status.setStatusCode(400);
             status.setStatusMessage("Internal Error");
+			return new ResponseEntity<RStatus>(status, HttpStatus.INTERNAL_SERVER_ERROR);
     	}
     	RStatus status = new RStatus();
         status.setStatusCode(200);
@@ -72,12 +75,16 @@ public class AdminMovieController {
         	RStatus status = new RStatus();
             status.setStatusCode(400);
             status.setStatusMessage(e.getMessage());
+
+			return new ResponseEntity<RStatus>(status, HttpStatus.BAD_REQUEST);
         }
 		catch(Exception e)
     	{
     		RStatus status = new RStatus();
             status.setStatusCode(400);
             status.setStatusMessage("Internal Error");
+
+			return new ResponseEntity<RStatus>(status, HttpStatus.INTERNAL_SERVER_ERROR);
     	}
 		RStatus status = new RStatus();
         status.setStatusCode(200);
@@ -164,7 +171,7 @@ public class AdminMovieController {
 	}
 	
 	@RequestMapping(value = "/sendPromotionalEmail/{promoCode}", method = RequestMethod.POST)
-	public String sendPromotionalEmail(String promoCode)
+	public String sendPromotionalEmail(@PathVariable String promoCode)
 	{
 		promotionService.sendPromotionEmail(promoCode);
 		return "Promotional email has been sent Successfully";

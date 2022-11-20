@@ -64,7 +64,10 @@ public class UserMovieService {
     @Transactional
     public Set<Movie> searchMovieByTitle(String title) {
         Set<Movie> moviesList = new HashSet<Movie>();
+        Set<Movie> cateogryMoviesList = new HashSet<Movie>();
         moviesList = movieRepository.findByTitleContaining(title);
+        cateogryMoviesList = movieRepository.findByCategoryContaining(title);
+        moviesList.addAll(cateogryMoviesList);
         return moviesList;
     }
 

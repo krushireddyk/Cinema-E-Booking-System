@@ -139,6 +139,9 @@ public class UserMovieController {
         return new ResponseEntity<MoviesList>(moviesList2, HttpStatus.OK);
     }
 
+    /*
+     * Search by title or category
+     */
     @RequestMapping(value = "/searchByTitle/{title}", method = RequestMethod.GET)
     public ResponseEntity<?> searchMovieByTitle(@PathVariable String title) {
         Set<Movie> moviesList = new HashSet<Movie>();

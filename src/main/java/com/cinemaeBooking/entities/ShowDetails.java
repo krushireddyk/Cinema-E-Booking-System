@@ -14,12 +14,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name="showdetails")
 public class ShowDetails {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ShowID;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date ShowDate;
     private LocalTime ShowTime;
     private Integer ShowDuration;
