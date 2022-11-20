@@ -438,3 +438,7 @@ ALTER TABLE `cinema`.`screen`
 DROP COLUMN `ShowID`,
 DROP INDEX `fk_screen_showid_idx` ;
 ;
+
+ALTER TABLE `cinema`.`promotion` 
+ADD UNIQUE INDEX `PromotionCode_UNIQUE` (`PromotionCode` ASC) VISIBLE;
+;
