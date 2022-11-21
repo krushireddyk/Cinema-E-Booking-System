@@ -25,6 +25,7 @@ import com.cinemaeBooking.exception.CustomErrorsException;
 import com.cinemaeBooking.repository.MovieRepository;
 import com.cinemaeBooking.repository.PromotionRepository;
 import com.cinemaeBooking.repository.ScreenRepository;
+import com.cinemaeBooking.repository.ShowRepository;
 import com.cinemaeBooking.repository.UserRepository;
 
 @Service
@@ -42,6 +43,9 @@ public class AdminMovieService
 	
 	@Autowired
 	PromotionRepository promotionRepository;
+	
+	@Autowired
+	ShowRepository showRepository;
 	
 	@Transactional
 	public Movie addMovie(Movie addMovieForm, BindingResult bindingResult) throws Exception
@@ -185,5 +189,12 @@ public class AdminMovieService
 		{
 			e.printStackTrace();
 		}
-	}		
+	}
+	
+	@Transactional
+	public List<ShowDetails> getAllShowDetails(int id)
+	{
+		System.out.println("THIS IS");
+		return showRepository.findByMovieId(id);
+	}
 }
