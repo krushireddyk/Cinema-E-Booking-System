@@ -6,12 +6,9 @@ import java.util.Set;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
 import com.cinemaeBooking.entities.Movie;
-import com.cinemaeBooking.entities.RStatus;
 import com.cinemaeBooking.repository.MovieRepository;
 
 @Service

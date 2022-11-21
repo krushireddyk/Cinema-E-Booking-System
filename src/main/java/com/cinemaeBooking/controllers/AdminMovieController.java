@@ -94,13 +94,13 @@ public class AdminMovieController {
         return new ResponseEntity<Promotion>(promotion, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/addShow/{title}", method = RequestMethod.PUT)
-    public ResponseEntity<?> addShow(@PathVariable String title, @RequestBody Movie addMovieForm)
+	@RequestMapping(value = "/editMovie/{title}", method = RequestMethod.PUT)
+    public ResponseEntity<?> editMovie(@PathVariable String title, @RequestBody Movie addMovieForm)
     {
     	Movie movie = new Movie();
     	try 
     	{
-    		movie = adminMovieService.addShow(title, addMovieForm);
+    		movie = adminMovieService.editMovie(title, addMovieForm);
         } 
         catch (CustomErrorsException e) 
     	{
@@ -119,7 +119,7 @@ public class AdminMovieController {
     	}
     	RStatus status = new RStatus();
         status.setStatusCode(200);
-        status.setStatusMessage("Show Added Successfully");
+        status.setStatusMessage("Edited movie Successfully");
         
         movie.setRStatus(status);
         return new ResponseEntity<Movie>(movie, HttpStatus.OK);

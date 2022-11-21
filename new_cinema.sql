@@ -442,3 +442,24 @@ DROP INDEX `fk_screen_showid_idx` ;
 ALTER TABLE `cinema`.`promotion` 
 ADD UNIQUE INDEX `PromotionCode_UNIQUE` (`PromotionCode` ASC) VISIBLE;
 ;
+
+ALTER TABLE `cinema`.`showdetails` 
+CHANGE COLUMN `ShowDate` `ShowDate` DATE NOT NULL COMMENT 'avalaible dates of the movie' ,
+CHANGE COLUMN `ShowTime` `ShowTime` TIME NOT NULL ,
+CHANGE COLUMN `screenID` `screenID` VARCHAR(225) NOT NULL ,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`ShowID`, `ShowDate`, `ShowTime`, `screenID`);
+;
+
+ALTER TABLE `cinema`.`booking` 
+DROP FOREIGN KEY `fk_ShowID`;
+ALTER TABLE `cinema`.`booking` 
+DROP COLUMN `ShowID`,
+DROP INDEX `fk_ShowID` ;
+;
+
+ALTER TABLE `cinema`.`showdetails` 
+DROP COLUMN `ShowID`,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`ShowDate`, `ShowTime`, `screenID`);
+;

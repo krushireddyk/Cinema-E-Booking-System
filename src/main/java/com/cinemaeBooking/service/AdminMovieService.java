@@ -19,6 +19,7 @@ import com.cinemaeBooking.entities.Movie;
 import com.cinemaeBooking.entities.Promotion;
 import com.cinemaeBooking.entities.Screen;
 import com.cinemaeBooking.entities.ShowDetails;
+import com.cinemaeBooking.entities.ShowId;
 import com.cinemaeBooking.entities.User;
 import com.cinemaeBooking.exception.CustomErrorsException;
 import com.cinemaeBooking.repository.MovieRepository;
@@ -81,9 +82,13 @@ public class AdminMovieService
 	}
 
 	@Transactional
-	public Movie addShow(String title, Movie addMovieForm) throws Exception
+	public Movie editMovie(String title, Movie addMovieForm) throws Exception
 	{
 		Movie movie = movieRepository.findByTitle(title);
+		if(movie == null) {
+			throw new CustomErrorsException("Invalid movie title");
+		}
+
 		Movie savedMovie = null;
 		
 		Set<ShowDetails> oldShowDetails = movie.getShowdetails();
@@ -94,41 +99,35 @@ public class AdminMovieService
 		{
 			for(ShowDetails oldShow : oldShowDetails) 
 			{
-				if(show.getScreen() != null)
-				{
-					if(show.getScreen().getScreenID() != null) 
-					{
-						if(oldShow.getScreen() != null && oldShow.getScreen().getScreenID() != null && oldShow.getScreen().getScreenID().equals(show.getScreen().getScreenID())) 
-						{
-							if(oldShow.getShowDate().compareTo(show.getShowDate()) == 0) 
-							{
-								if(oldShow.getShowTime().compareTo(show.getShowTime()) == 0)
-								{
+				if(show.getShowId() != null) {
+					if(show.getShowId().getScreen() != null) {
+						System.out.println(show.getShowId().getScreen().getScreenID());
+						System.out.println(oldShow.getShowId().getScreen().getScreenID());
+						if(show.getShowId().getScreen().getScreenID().equals(oldShow.getShowId().getScreen().getScreenID())) {
+							if(oldShow.getShowId().getShowDate().compareTo(show.getShowId().getShowDate()) == 0) {
+								if(oldShow.getShowId().getShowTime().compareTo(show.getShowId().getShowTime()) == 0) {
 									throw new CustomErrorsException("This show slot is already booked");
 								}
 							}
 						}
-					}					
-					else 
-					{
-						throw new CustomErrorsException("Please provide screen ID");
 					}
-				}				
-				else 
-				{
-					throw new CustomErrorsException("Please provide screen details");
+					
 				}
 			}
 			ShowDetails showDetail = new ShowDetails();
-			showDetail.setShowDate(show.getShowDate());
+			//showDetail.setShowDate(show.getShowDate());
 			showDetail.setShowDuration(show.getShowDuration());
-			showDetail.setShowTime(show.getShowTime());
-			Screen screen = screenRepository.findByScreenID(show.getScreen().getScreenID());
+			//showDetail.setShowTime(show.getShowTime());
+			Screen screen = screenRepository.findByScreenID(show.getShowId().getScreen().getScreenID());
 			if(screen == null) 
 			{
 				throw new CustomErrorsException("Please provide valid/existing screen details");
 			}
-			showDetail.setScreen(screen);
+			ShowId showId = new ShowId();
+			showId.setShowDate(show.getShowId().getShowDate());
+			showId.setShowTime(show.getShowId().getShowTime());
+			showId.setScreen(show.getShowId().getScreen());
+			showDetail.setShowId(showId);
 			showDetail.setMovie(movie);
 			updatedShowDetails.add(showDetail);
 		}

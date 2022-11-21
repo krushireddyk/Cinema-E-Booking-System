@@ -1,65 +1,49 @@
 package com.cinemaeBooking.entities;
 
-import java.time.LocalTime;
-import java.util.Date;
-
-import javax.persistence.CascadeType;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name="showdetails")
 public class ShowDetails {
-    @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ShowID;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date ShowDate;
-    private LocalTime ShowTime;
+    @EmbeddedId
+    private ShowId showId = new ShowId();
     private Integer ShowDuration;
 
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "movieID", referencedColumnName = "movieID")
     private Movie movie;
 
-    //@OneToOne(cascade=CascadeType.ALL)
-	//@JoinColumn(name = "screenID", referencedColumnName = "screenID")
-    @ManyToOne(optional = true)
-	@JoinColumn(name ="screenID")
-    private Screen screen;
+    @Transient
+    private RStatus rStatus;
 
-    public Integer getShowID() {
-        return this.ShowID;
+	//@JoinColumn(name ="screenID",referencedColumnName="screenID")
+    //@MapsId("screenID")
+    //@ManyToOne
+    //@JoinColumn(name = "screenID",insertable = false, updatable = false)
+    //private Screen screen;
+
+    /*public Screen getScreen() {
+        return this.screen;
     }
 
-    public void setShowID(Integer ShowID) {
-        this.ShowID = ShowID;
+    public void setScreen(Screen screen) {
+        this.screen = screen;
+    }*/
+
+    public ShowId getShowId() {
+        return this.showId;
     }
 
-    public Date getShowDate() {
-        return this.ShowDate;
-    }
-
-    public void setShowDate(Date ShowDate) {
-        this.ShowDate = ShowDate;
-    }
-
-    public LocalTime getShowTime() {
-        return this.ShowTime;
-    }
-
-    public void setShowTime(LocalTime ShowTime) {
-        this.ShowTime = ShowTime;
-    }
+    public void setShowId(ShowId showId) {
+        this.showId = showId;
+    } 
 
     public Integer getShowDuration() {
         return this.ShowDuration;
@@ -73,12 +57,12 @@ public class ShowDetails {
         this.movie = movie;
     }
 
-    public void setScreen(Screen screen) {
-        this.screen = screen;
+    public RStatus getRStatus() {
+        return this.rStatus;
     }
 
-    public Screen getScreen() {
-        return this.screen;
+    public void setRStatus(RStatus rStatus) {
+        this.rStatus = rStatus;
     }
 
 }

@@ -12,11 +12,11 @@ import com.cinemaeBooking.entities.Movie;
 public interface MovieRepository extends CrudRepository<Movie, Integer>  {
     public Set<Movie> findAll();
 
-    @Query(value = "SELECT * FROM movie m LEFT JOIN showdetails sd ON m.movieID = sd.movieID WHERE (CONCAT(sd.showDate, ' ', sd.showTime) >= NOW() AND sd.showID IS NOT NULL) OR sd.showID is NULL"
+    @Query(value = "SELECT * FROM movie m LEFT JOIN showdetails sd ON m.movieID = sd.movieID WHERE (CONCAT(sd.showDate, ' ', sd.showTime) >= NOW()) OR sd.showDate is NULL and sd.showTime is NULL and sd.screenID is NULL"
     , nativeQuery = true)
     public Set<Movie> findAllCurrentlyRunningAndComingSoonMovies();
 
-    @Query(value = "SELECT * FROM movie m LEFT JOIN showdetails sd ON m.movieID = sd.movieID WHERE sd.showID is NULL"
+    @Query(value = "SELECT * FROM movie m LEFT JOIN showdetails sd ON m.movieID = sd.movieID WHERE sd.showDate is NULL and sd.showTime is NULL and sd.screenID is NULL"
     , nativeQuery = true)
     public Set<Movie> findAllComingSoonMovies();
 
