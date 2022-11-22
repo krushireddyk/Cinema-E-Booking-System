@@ -178,7 +178,6 @@ public class UserMovieController {
         moviesList2.setMoviesList(moviesList);
         moviesList2.setRStatus(status);
         return new ResponseEntity<MoviesList>(moviesList2, HttpStatus.OK);
-    }
-    
+    } 
     
 }
