@@ -1,5 +1,6 @@
 package com.cinemaeBooking.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -24,16 +25,15 @@ public class UserShowService {
 	ShowRepository showRepository;
 
     @Transactional
-	public List<ShowDetails> getShowDetailsByTitleAndShowDate(Movie movie)
+	public List<ShowDetails> getShowDetailsByTitleAndShowDate(String title, Date showDate)
 	{
-        Movie existingMovie = movieRepository.findByTitle(movie.getTitle());
+        Movie existingMovie = movieRepository.findByTitle(title);
         if(existingMovie == null) {
             throw new CustomErrorsException("Invalid Movie title");
         }
-        Set<ShowDetails> showDetailsList = movie.getShowdetails();
-        if(showDetailsList.isEmpty()){
-            throw new CustomErrorsException("Please provide valid show details");
+        if(showDate == null){
+            throw new CustomErrorsException("Please provide valid show date");
         }
-		return showRepository.findByTitleAndShowDate(movie.getTitle(), showDetailsList.iterator().next().getShowId().getShowDate());
+		return showRepository.findByTitleAndShowDate(title, showDate);
 	}
 }
