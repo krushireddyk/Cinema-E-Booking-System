@@ -37,7 +37,7 @@ public class AdminShowService {
                 if(oldShowDetails.getShowId().getShowDate().compareTo(showDetails.getShowId().getShowDate()) == 0) {
                     if(oldShowDetails.getShowId().getShowTime().compareTo(showDetails.getShowId().getShowTime()) == 0) {
                         if(oldShowDetails.getShowId().getScreen().getScreenID().equals(showDetails.getShowId().getScreen().getScreenID())) {
-                            SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
                             String startDateString = outputFormat.format(showDetails.getShowId().getShowDate());
                             throw new CustomErrorsException("This Slot("+ startDateString + " " + showDetails.getShowId().getShowTime()+ ") at Screen " + showDetails.getShowId().getScreen().getScreenID() + " is already booked");
                         }

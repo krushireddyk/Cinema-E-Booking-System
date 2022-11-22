@@ -1,5 +1,6 @@
 package com.cinemaeBooking.controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,12 +32,14 @@ public class UserShowController {
     public ResponseEntity<?> getShowDetailsByTitleAndShowDate(@RequestParam("title") String title, @RequestParam("showDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date showDate) {
         ShowDetailsList showDetailsList2 = new ShowDetailsList();
         List<ShowDetails> showDetailsList = new ArrayList<ShowDetails>();
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String startDateString = outputFormat.format(showDate);
         try {    
             showDetailsList = userShowService.getShowDetailsByTitleAndShowDate(title, showDate);
             if(showDetailsList.isEmpty()) {
                 RStatus status = new RStatus();
                 status.setStatusCode(400);
-                status.setStatusMessage("No shows for this movie: " + title);
+                status.setStatusMessage("No shows for this Movie: " + title + ", on Show Date: " + startDateString);
                 return new ResponseEntity<RStatus>(status, HttpStatus.BAD_REQUEST);
             }
         }
@@ -57,7 +60,7 @@ public class UserShowController {
     	}
         RStatus status = new RStatus();
         status.setStatusCode(200);
-        status.setStatusMessage("Show details for the movie: "+ title);
+        status.setStatusMessage("Show details for the Movie: "+ title + ", on Show Date: " + startDateString);
         showDetailsList2.setRStatus(status);
         showDetailsList2.setShowDetailsList(showDetailsList);
         return new ResponseEntity<ShowDetailsList>(showDetailsList2, HttpStatus.OK);
