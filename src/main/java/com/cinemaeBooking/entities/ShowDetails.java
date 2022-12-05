@@ -1,10 +1,14 @@
 package com.cinemaeBooking.entities;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -19,6 +23,9 @@ public class ShowDetails {
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "movieID", referencedColumnName = "movieID")
     private Movie movie;
+    
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "showdetails")
+    private Set<Booking> bookingList;
 
     @Transient
     private RStatus rStatus;
@@ -64,5 +71,14 @@ public class ShowDetails {
     public void setRStatus(RStatus rStatus) {
         this.rStatus = rStatus;
     }
+
+    /*public Set<Booking> getBookingList() {
+        return this.bookingList;
+    }
+
+    public void setBookingList(Set<Booking> bookingList) {
+        this.bookingList = bookingList;
+    }*/
+
 
 }

@@ -110,8 +110,8 @@ public class EditProfileService {
             Set<PaymentCard> updatedPaymentCards = new HashSet<PaymentCard>();
             for(PaymentCard newPaymentCard : newPaymentCards) {
                 for(PaymentCard paymentCard : paymentCards) {
-                    String oldCard_Number = encryptDecrypt.decrypt(paymentCard.getCard_Number());
-                    String newCard_Number = newPaymentCard.getCard_Number();
+                    String oldCard_Number = encryptDecrypt.decrypt(paymentCard.getCardNumber());
+                    String newCard_Number = newPaymentCard.getCardNumber();
                     if(newCard_Number.equals(oldCard_Number)) {
                         PaymentCard tempPaymentCard = paymentCard;
                         paymentCard.setExpiryDate(newPaymentCard.getExpiryDate());

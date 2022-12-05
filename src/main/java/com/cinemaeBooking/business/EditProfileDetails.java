@@ -28,7 +28,7 @@ public class EditProfileDetails {
         for(PaymentCard paymentCard : savedPaymentCards) {
             PaymentCard paymentCardDecrypted = new PaymentCard();
             paymentCardDecrypted.setAddress(paymentCard.getAddress());
-            paymentCardDecrypted.setCard_Number(encryptDecrypt.decrypt(paymentCard.getCard_Number()));
+            paymentCardDecrypted.setCardNumber(encryptDecrypt.decrypt(paymentCard.getCardNumber()));
             paymentCardDecrypted.setExpiryDate(paymentCard.getExpiryDate());
             paymentCardDecrypted.setPaymentID(paymentCard.getPaymentID());
             savedDecryptedPaymentCards.add(paymentCardDecrypted);
@@ -47,7 +47,7 @@ public class EditProfileDetails {
         for(PaymentCard paymentCard : savedPaymentCards) {
             PaymentCard paymentCardDecrypted = new PaymentCard();
             paymentCardDecrypted.setAddress(paymentCard.getAddress());
-            paymentCardDecrypted.setCard_Number(encryptDecrypt.decrypt(paymentCard.getCard_Number()));
+            paymentCardDecrypted.setCardNumber(encryptDecrypt.decrypt(paymentCard.getCardNumber()));
             paymentCardDecrypted.setExpiryDate(paymentCard.getExpiryDate());
             paymentCardDecrypted.setPaymentID(paymentCard.getPaymentID());
             savedDecryptedPaymentCards.add(paymentCardDecrypted);

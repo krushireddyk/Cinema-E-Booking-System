@@ -1,5 +1,7 @@
 package com.cinemaeBooking.entities;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -18,7 +21,7 @@ public class PaymentCard
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer paymentID;
-	private String card_Number;
+	private String cardNumber;
 	private String expiryDate;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -30,6 +33,10 @@ public class PaymentCard
 	@OneToOne(mappedBy = "paymentCard", cascade = CascadeType.ALL)
 	private BillingAddress address;
 
+	//@OneToOne(mappedBy = "paymentCard", cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "paymentCard")
+	private Set<Booking> bookingList;
+
 	public Integer getPaymentID() {
 		return this.paymentID;
 	}
@@ -38,12 +45,13 @@ public class PaymentCard
 		this.paymentID = paymentID;
 	}
 
-	public String getCard_Number() {
-		return this.card_Number;
+
+	public String getCardNumber() {
+		return this.cardNumber;
 	}
 
-	public void setCard_Number(String card_Number) {
-		this.card_Number = card_Number;
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
 	}
 
 	public String getExpiryDate() {
@@ -76,6 +84,14 @@ public class PaymentCard
 	public void setAddress(BillingAddress address) {
 		this.address = address;
 	}
+
+	/*public Set<Booking> getBookingList() {
+		return this.bookingList;
+	}
+
+	public void setBookingList(Set<Booking> bookingList) {
+		this.bookingList = bookingList;
+	}*/
 	
 }
 

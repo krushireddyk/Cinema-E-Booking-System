@@ -463,3 +463,67 @@ DROP COLUMN `ShowID`,
 DROP PRIMARY KEY,
 ADD PRIMARY KEY (`ShowDate`, `ShowTime`, `screenID`);
 ;
+
+ALTER TABLE `cinema`.`booking` 
+ADD COLUMN `ShowDate` DATE NULL AFTER `bookingStatus`,
+ADD COLUMN `ShowTime` TIME NULL AFTER `ShowDate`,
+ADD COLUMN `screenID` VARCHAR(225) NULL AFTER `ShowTime`;
+
+ALTER TABLE `cinema`.`booking` 
+ADD INDEX `fk_showdetails_idx` (`ShowDate` ASC, `ShowTime` ASC, `screenID` ASC) VISIBLE;
+;
+ALTER TABLE `cinema`.`booking` 
+ADD CONSTRAINT `fk_showdetails`
+  FOREIGN KEY (`ShowDate` , `ShowTime` , `screenID`)
+  REFERENCES `cinema`.`showdetails` (`ShowDate` , `ShowTime` , `screenID`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE `cinema`.`booking` 
+DROP FOREIGN KEY `fk_PromoID`;
+ALTER TABLE `cinema`.`booking` 
+CHANGE COLUMN `PromoID` `PromotionID` INT NULL DEFAULT NULL ;
+ALTER TABLE `cinema`.`booking` 
+ADD CONSTRAINT `fk_PromoID`
+  FOREIGN KEY (`PromotionID`)
+  REFERENCES `cinema`.`promotion` (`PromotionID`);
+
+ALTER TABLE `cinema`.`booking` 
+DROP FOREIGN KEY `fk_UserName`;
+ALTER TABLE `cinema`.`booking` 
+DROP COLUMN `UserName`,
+DROP INDEX `fk_UserName` ;
+;
+
+ALTER TABLE `cinema`.`booking` 
+ADD COLUMN `UserID` INT NULL AFTER `screenID`;
+
+ALTER TABLE `cinema`.`booking` 
+ADD INDEX `fk_booking_userID_idx` (`UserID` ASC) VISIBLE;
+;
+ALTER TABLE `cinema`.`booking` 
+ADD CONSTRAINT `fk_booking_userID`
+  FOREIGN KEY (`UserID`)
+  REFERENCES `cinema`.`user` (`UserID`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE `cinema`.`paymentcard` 
+ADD UNIQUE INDEX `Card_Number_UNIQUE` (`Card_Number` ASC) VISIBLE;
+;
+
+ALTER TABLE `cinema`.`paymentcard` 
+CHANGE COLUMN `Card_Number` `CardNumber` VARCHAR(255) NULL DEFAULT NULL ;
+
+ALTER TABLE `cinema`.`booking` 
+ADD COLUMN `MovieID` INT NULL AFTER `UserID`;
+
+ALTER TABLE `cinema`.`booking` 
+ADD INDEX `fk_booking_movieID_idx` (`MovieID` ASC) VISIBLE;
+;
+ALTER TABLE `cinema`.`booking` 
+ADD CONSTRAINT `fk_booking_movieID`
+  FOREIGN KEY (`MovieID`)
+  REFERENCES `cinema`.`movie` (`MovieID`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
