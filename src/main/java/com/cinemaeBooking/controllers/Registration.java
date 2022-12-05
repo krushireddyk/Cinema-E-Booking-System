@@ -118,7 +118,7 @@ public class Registration {
                 String expDate = paymentCard.getExpiryDate();
                 expDate=expDate+"-01";
                 paymentCard.setExpiryDate(expDate);
-                paymentCard.setCard_Number(encryptDecrypt.encrypt(paymentCard.getCard_Number()));
+                paymentCard.setCardNumber(encryptDecrypt.encrypt(paymentCard.getCardNumber()));
                 paymentCards.add(paymentCard);
             }
             user.setPaymentCards(paymentCards);
@@ -129,7 +129,7 @@ public class Registration {
             Set<PaymentCard> savedPaymentCards = savedUser.getPaymentCards();
             Set<PaymentCard> savedEncryptedPaymentCards = new HashSet<PaymentCard>();
             for(PaymentCard paymentCard : savedPaymentCards) {
-                paymentCard.setCard_Number(encryptDecrypt.decrypt(paymentCard.getCard_Number()));
+                paymentCard.setCardNumber(encryptDecrypt.decrypt(paymentCard.getCardNumber()));
                 savedEncryptedPaymentCards.add(paymentCard);
             }
             savedUser.setPaymentCards(savedEncryptedPaymentCards);

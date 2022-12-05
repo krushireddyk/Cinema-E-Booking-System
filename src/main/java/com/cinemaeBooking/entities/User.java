@@ -42,6 +42,10 @@ public class User
     //@JoinColumn(name = "statusID")
 	private Status status;
 
+	//@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+	private Set<Booking> bookingList;
+
 	@Transient
 	private String newPassword;
 
@@ -161,5 +165,13 @@ public class User
 	public void setRstatus(RStatus rstatus) {
 		this.rstatus = rstatus;
 	}
+
+	/*public Set<Booking> getBookingList() {
+		return this.bookingList;
+	}
+
+	public void setBookingList(Set<Booking> bookingList) {
+		this.bookingList = bookingList;
+	}*/
 
 }

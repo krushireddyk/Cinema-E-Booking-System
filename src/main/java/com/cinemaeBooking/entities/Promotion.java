@@ -1,11 +1,17 @@
 package com.cinemaeBooking.entities;
 
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -25,6 +31,11 @@ public class Promotion {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 	private float promotional_Value;
+
+	//@OneToOne(mappedBy = "promotion", cascade = CascadeType.ALL)
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "promotion")
+	private Set<Booking> bookingList;
 	
 	@Transient
     private RStatus rStatus;
@@ -67,5 +78,15 @@ public class Promotion {
     public void setRStatus(RStatus rStatus) {
         this.rStatus = rStatus;
     }
+
+
+	/*public Set<Booking> getBookingList() {
+		return this.bookingList;
+	}
+
+	public void setBookingList(Set<Booking> bookingList) {
+		this.bookingList = bookingList;
+	}*/
+	
 
 }

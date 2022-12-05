@@ -41,6 +41,9 @@ public class Movie {
     @Transient
     private String base64;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "movie")
+	private Set<Booking> bookingList;
+
     public Integer getMovieID() {
         return this.movieID;
     }
