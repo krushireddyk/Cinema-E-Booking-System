@@ -54,6 +54,9 @@ public class EncryptDecrypt {
             byte[] plainText = cipher.doFinal(encryptedText);
             decryptedText= new String(plainText);
         } catch (Exception e) {
+            if(e.getMessage().contains("Input length must be multiple of 8 when decrypting with padded cipher")) {
+                return encryptedString;
+            }
             e.printStackTrace();
         }
         return decryptedText;

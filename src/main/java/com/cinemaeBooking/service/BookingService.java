@@ -1,5 +1,8 @@
 package com.cinemaeBooking.service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +13,6 @@ import com.cinemaeBooking.entities.Movie;
 import com.cinemaeBooking.entities.PaymentCard;
 import com.cinemaeBooking.entities.Promotion;
 import com.cinemaeBooking.entities.ShowDetails;
-import com.cinemaeBooking.entities.ShowId;
 import com.cinemaeBooking.entities.User;
 import com.cinemaeBooking.repository.BookingRepository;
 import com.cinemaeBooking.repository.MovieRepository;
@@ -60,8 +62,14 @@ public class BookingService {
         Movie movie = movieRepository.findByTitle(booking.getMovie().getTitle());
         tempBooking.setMovie(movie);
         Booking savedBooking = bookingRepository.save(tempBooking);
-        System.out.println(savedBooking.getBookingID());
         return savedBooking;
+    }
+
+    @Transactional
+    public Set<Booking> findAllBookingsByUserName(String userName) {
+        Set<Booking> bookingList = new HashSet<Booking>();
+        bookingList = bookingRepository.findAllBookingsByUserName(userName);
+        return bookingList;
     }
     
 }
