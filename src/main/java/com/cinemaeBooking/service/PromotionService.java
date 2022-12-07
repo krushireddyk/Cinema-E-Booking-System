@@ -123,4 +123,19 @@ public class PromotionService {
 		return changedPromotion;
 		
 	}
+	
+	public float verifyPromotion(String promocode)
+	{
+		Promotion promotion;
+		promotion = promotionRepository.findByPromotionCode(promocode);
+		if(promotion!=null)
+		{
+			return promotion.getPromotional_Value();
+		}
+		else
+		{
+			return 0;
+		}
+	}
 }
+
