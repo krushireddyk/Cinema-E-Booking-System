@@ -1,7 +1,7 @@
 package com.cinemaeBooking.service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -13,7 +13,9 @@ import com.cinemaeBooking.entities.Movie;
 import com.cinemaeBooking.entities.PaymentCard;
 import com.cinemaeBooking.entities.Promotion;
 import com.cinemaeBooking.entities.ShowDetails;
+import com.cinemaeBooking.entities.ShowId;
 import com.cinemaeBooking.entities.User;
+import com.cinemaeBooking.exception.CustomErrorsException;
 import com.cinemaeBooking.repository.BookingRepository;
 import com.cinemaeBooking.repository.MovieRepository;
 import com.cinemaeBooking.repository.PaymentCardRepository;
@@ -53,18 +55,44 @@ public class BookingService {
     public Booking submitOrder(Booking booking) throws Exception {
         Booking tempBooking = new Booking();
         tempBooking.setNumberOfTickets(booking.getNumberOfTickets());
-        tempBooking.setTotalPrice(booking.getTotalPrice());
-        PaymentCard paymentCard = paymentCardRepository.findByCardNumber(encryptDecrypt.encrypt(booking.getPaymentCard().getCardNumber()));
-        tempBooking.setPaymentCard(paymentCard);
+        tempBooking.setTotalPrice(booking.getTotalPrice());  
         Promotion promotion = promotionRepository.findByPromotionCode(booking.getPromotion().getPromotionCode());
+        if(promotion == null) {
+            throw new CustomErrorsException("Invalid promotion code: " + booking.getPromotion().getPromotionCode());
+        }
         tempBooking.setPromotion(promotion);
-        ShowDetails showDetails = showRepository.findByShowId(booking.getShowdetails().getShowId());
-        tempBooking.setShowdetails(showDetails);
         User user = userRepository.findByUserName(booking.getUser().getUserName());
+        if(user == null) {
+            throw new CustomErrorsException("Invalid user name: " + booking.getUser().getUserName());
+        }
         System.out.println(user.getEmailID());
         tempBooking.setUser(user);
+        PaymentCard paymentCard = paymentCardRepository.findByCardNumber(encryptDecrypt.encrypt(booking.getPaymentCard().getCardNumber()));
+        if(paymentCard == null) {
+            throw new CustomErrorsException("Invalid payment card number: " + booking.getPaymentCard().getCardNumber()); 
+        }
+        tempBooking.setPaymentCard(paymentCard);
         Movie movie = movieRepository.findByTitle(booking.getMovie().getTitle());
+        if(movie == null) {
+            throw new CustomErrorsException("Invalid movie name: " + booking.getMovie().getTitle());
+        }
         tempBooking.setMovie(movie);
+        ShowId providedShowId = booking.getShowdetails().getShowId();
+        Boolean isValidShow = false;
+        for(ShowDetails showDetails : movie.getShowdetails()) {
+            if(providedShowId.equals(showDetails.getShowId())) {
+                isValidShow = true;
+                break;
+            }
+        }
+        if(isValidShow == false) {
+            throw new CustomErrorsException("Invalid show details for the movie name: " +booking.getMovie().getTitle());
+        }
+        ShowDetails showDetails = showRepository.findByShowId(providedShowId);
+        if(showDetails == null) {
+            throw new CustomErrorsException("Invalid show details");
+        }
+        tempBooking.setShowdetails(showDetails);
         Booking savedBooking = bookingRepository.save(tempBooking);
         System.out.println(savedBooking.getBookingID());
         emailService.sendBookingEmail(savedBooking);//send email on booking confirmation
@@ -72,8 +100,8 @@ public class BookingService {
     }
 
     @Transactional
-    public Set<Booking> findAllBookingsByUserName(String userName) {
-        Set<Booking> bookingList = new HashSet<Booking>();
+    public List<Booking> findAllBookingsByUserName(String userName) {
+        List<Booking> bookingList = new ArrayList<Booking>();
         bookingList = bookingRepository.findAllBookingsByUserName(userName);
         return bookingList;
     }

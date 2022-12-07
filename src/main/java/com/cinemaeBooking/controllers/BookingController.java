@@ -1,7 +1,7 @@
 package com.cinemaeBooking.controllers;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +16,7 @@ import com.cinemaeBooking.business.BookingDetails;
 import com.cinemaeBooking.entities.Booking;
 import com.cinemaeBooking.entities.BookingList;
 import com.cinemaeBooking.entities.RStatus;
+import com.cinemaeBooking.exception.CustomErrorsException;
 
 @RestController
 @RequestMapping("/checkout")
@@ -30,6 +31,13 @@ public class BookingController {
         Booking savedBooking = null;
         try {
             savedBooking = bookingDetails.submitOrder(booking);
+        }
+        catch (CustomErrorsException e) 
+    	{
+        	RStatus status = new RStatus();
+            status.setStatusCode(400);
+            status.setStatusMessage(e.getMessage());
+			return new ResponseEntity<RStatus>(status, HttpStatus.BAD_REQUEST);
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -47,7 +55,7 @@ public class BookingController {
 
     @RequestMapping(value = "/orderHistory/{userName}", method = RequestMethod.GET)
     public ResponseEntity<?> orderHistory(@PathVariable String userName) {
-        Set<Booking> bookingList = new HashSet<Booking>();
+        List<Booking> bookingList = new ArrayList<Booking>();
         try {
             bookingList = bookingDetails.findAllBookingsByUserName(userName);
             if(bookingList.isEmpty()) {

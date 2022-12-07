@@ -1,17 +1,19 @@
 package com.cinemaeBooking.entities;
 
-import java.util.Set;
+import java.util.List;
 
 public class BookingList {
-    private Set<Booking> bookingList;
+    private List<Booking> bookingList;
     private RStatus rStatus;
-    public Set<Booking> getBookingList() {
+
+    public List<Booking> getBookingList() {
         return this.bookingList;
     }
 
-    public void setBookingList(Set<Booking> bookingList) {
+    public void setBookingList(List<Booking> bookingList) {
         this.bookingList = bookingList;
     }
+    
 
     public RStatus getRStatus() {
         return this.rStatus;

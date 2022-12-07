@@ -1,6 +1,8 @@
 package com.cinemaeBooking.business;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +27,10 @@ public class BookingDetails {
         return bookingService.submitOrder(booking);
     }
 
-    public Set<Booking> findAllBookingsByUserName(String userName) {
-        Set<Booking> bookingList = new HashSet<Booking>();
+    public List<Booking> findAllBookingsByUserName(String userName) {
+        List<Booking> bookingList = new ArrayList<Booking>();
         bookingList = bookingService.findAllBookingsByUserName(userName);
-        Set<Booking> finalBookingList = new HashSet<Booking>();
+        List<Booking> finalBookingList = new ArrayList<Booking>();
         int count = 0;
         for(Booking booking : bookingList) {
             Booking tempBooking = new Booking();

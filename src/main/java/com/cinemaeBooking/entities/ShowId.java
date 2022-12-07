@@ -54,7 +54,7 @@ public class ShowId implements Serializable{
         ShowId that = (ShowId) o;
         return Objects.equals(getShowDate(), that.getShowDate()) &&
                 Objects.equals(getShowTime(), that.getShowTime()) &&
-                 Objects.equals(getScreen(), that.getScreen());
+                 Objects.equals(getScreen().getScreenID(), that.getScreen().getScreenID());
     }
  
     @Override
