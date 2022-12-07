@@ -18,6 +18,7 @@ import com.cinemaeBooking.repository.PaymentCardRepository;
 import com.cinemaeBooking.repository.PromotionRepository;
 import com.cinemaeBooking.repository.ShowRepository;
 import com.cinemaeBooking.repository.UserRepository;
+import com.cinemaeBooking.serviceIMPL.EmailService;
 
 @Service
 public class BookingService {
@@ -42,6 +43,9 @@ public class BookingService {
 
     @Autowired
     MovieRepository movieRepository;
+    
+    @Autowired
+    EmailService emailService;
 
     @Transactional
     public Booking submitOrder(Booking booking) throws Exception {
@@ -61,6 +65,7 @@ public class BookingService {
         tempBooking.setMovie(movie);
         Booking savedBooking = bookingRepository.save(tempBooking);
         System.out.println(savedBooking.getBookingID());
+        emailService.sendBookingEmail(savedBooking);//send email on booking confirmation
         return savedBooking;
     }
     

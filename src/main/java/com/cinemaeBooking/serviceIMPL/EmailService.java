@@ -9,7 +9,11 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import com.cinemaeBooking.entities.Booking;
+
 import javax.mail.internet.InternetAddress;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
@@ -99,6 +103,29 @@ public class EmailService
         };
         mailSender.send(preparator);
     }
+    
+    public void sendBookingEmail(Booking booking)
+    {
+    	Context context = new Context();
+    	context.setVariable(booking.getMovie().getTitle(), booking.getBookingID());
+    	String emailContents = templateEngine.process("BookingConfirmation", context);
+    	MimeMessagePreparator preparator = mimeMessage -> 
+    	{
+    		MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+    		message.setTo(booking.getUser().getEmailID());
+    		message.setFrom(new InternetAddress("jhr6066@gmail.com"));
+    		message.setSubject("Your Booking Confirmation for :"+booking.getMovie().getTitle());
+    		message.setSentDate(new Date());
+            message.setText(emailContents, true);
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String startDateString = outputFormat.format(booking.getShowdetails().getShowId().getShowDate());
+            message.setText(booking.getMovie().getTitle()+" "+booking.getShowdetails().getShowDuration()+" Enjoy the movie\n"+"\t Your booking id: CEBS "+booking.getBookingID()+" "+
+            		"Date : "+startDateString+"\t "+"Screen "+booking.getShowdetails().getShowId().getScreen().getScreenID()+" \t"+"Show Time : "+booking.getShowdetails().getShowId().getShowTime());
+            //message.setText(booking.getShowdetails().getShowId().getShowDate()+"\t "+booking.getShowdetails().getShowId().getScreen()+" \t"+booking.getShowdetails().getShowId().getShowTime());
+    	};
+    	mailSender.send(preparator);
+    }
 
 }
+
 
