@@ -55,12 +55,20 @@ public class BookingService {
     public Booking submitOrder(Booking booking) throws Exception {
         Booking tempBooking = new Booking();
         tempBooking.setNumberOfTickets(booking.getNumberOfTickets());
-        tempBooking.setTotalPrice(booking.getTotalPrice());  
-        Promotion promotion = promotionRepository.findByPromotionCode(booking.getPromotion().getPromotionCode());
-        if(promotion == null) {
-            throw new CustomErrorsException("Invalid promotion code: " + booking.getPromotion().getPromotionCode());
+        tempBooking.setTotalPrice(booking.getTotalPrice());
+        if(booking.getPromotion() == null) {
+            tempBooking.setPromotion(null);
         }
-        tempBooking.setPromotion(promotion);
+        else if(booking.getPromotion().getPromotionCode() == null) {
+            tempBooking.setPromotion(null);
+        }
+        else {
+            Promotion promotion = promotionRepository.findByPromotionCode(booking.getPromotion().getPromotionCode());
+            if(promotion == null) {
+                throw new CustomErrorsException("Invalid promotion code: " + booking.getPromotion().getPromotionCode());
+            }
+            tempBooking.setPromotion(promotion);
+        }
         User user = userRepository.findByUserName(booking.getUser().getUserName());
         if(user == null) {
             throw new CustomErrorsException("Invalid user name: " + booking.getUser().getUserName());
