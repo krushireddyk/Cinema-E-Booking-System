@@ -2,6 +2,7 @@ package com.cinemaeBooking.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -51,8 +52,21 @@ public class BookingService {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    EditProfileService editProfileService;
+
     @Transactional
     public Booking submitOrder(Booking booking) throws Exception {
+        if(booking.getIsPaymentCardNew() == 1) {
+            User existingUser = editProfileService.getUser(booking.getUser().getUserName());
+            Set<PaymentCard> paymentCards = existingUser.getPaymentCards();
+            PaymentCard newPaymentCard = booking.getPaymentCard();
+            newPaymentCard.setCardNumber(encryptDecrypt.encrypt(newPaymentCard.getCardNumber()));
+            paymentCards.add(newPaymentCard);
+            User updateUserDetails = booking.getUser();
+            updateUserDetails.setPaymentCards(paymentCards);
+            editProfileService.editUser(updateUserDetails.getUserName(), updateUserDetails);
+        }
         Booking tempBooking = new Booking();
         tempBooking.setNumberOfTickets(booking.getNumberOfTickets());
         tempBooking.setTotalPrice(booking.getTotalPrice());
@@ -75,7 +89,8 @@ public class BookingService {
         }
         System.out.println(user.getEmailID());
         tempBooking.setUser(user);
-        PaymentCard paymentCard = paymentCardRepository.findByCardNumber(encryptDecrypt.encrypt(booking.getPaymentCard().getCardNumber()));
+        System.out.println(booking.getPaymentCard().getCardNumber());
+        PaymentCard paymentCard = paymentCardRepository.findByCardNumber(booking.getPaymentCard().getCardNumber());
         if(paymentCard == null) {
             throw new CustomErrorsException("Invalid payment card number: " + booking.getPaymentCard().getCardNumber()); 
         }

@@ -24,6 +24,11 @@ public class BookingDetails {
     EncryptDecrypt encryptDecrypt;
 
     public Booking submitOrder(Booking booking) throws Exception {
+        if(booking.getIsPaymentCardNew() == 0) {
+            PaymentCard paymentCard = booking.getPaymentCard();
+            paymentCard.setCardNumber(encryptDecrypt.encrypt(paymentCard.getCardNumber()));
+            booking.setPaymentCard(paymentCard);
+        }
         return bookingService.submitOrder(booking);
     }
 

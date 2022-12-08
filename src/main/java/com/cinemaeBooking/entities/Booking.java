@@ -57,6 +57,9 @@ public class Booking {
     @Transient
     private RStatus rStatus;
 
+    @Transient
+    private Integer isPaymentCardNew = 0;
+
     public Integer getBookingID() {
         return this.bookingID;
     }
@@ -153,5 +156,15 @@ public class Booking {
     public void setRStatus(RStatus rStatus) {
         this.rStatus = rStatus;
     }
+
+
+    public Integer getIsPaymentCardNew() {
+        return this.isPaymentCardNew;
+    }
+
+    public void setIsPaymentCardNew(Integer isPaymentCardNew) {
+        this.isPaymentCardNew = isPaymentCardNew;
+    }
+
 
 }

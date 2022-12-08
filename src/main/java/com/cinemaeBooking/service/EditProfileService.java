@@ -112,7 +112,8 @@ public class EditProfileService {
                 for(PaymentCard paymentCard : paymentCards) {
                     String oldCard_Number = encryptDecrypt.decrypt(paymentCard.getCardNumber());
                     String newCard_Number = newPaymentCard.getCardNumber();
-                    if(newCard_Number.equals(oldCard_Number)) {
+                    String decryptedNew = encryptDecrypt.decrypt(newPaymentCard.getCardNumber());
+                    if(newCard_Number.equals(oldCard_Number) || decryptedNew.equals(oldCard_Number)) {
                         PaymentCard tempPaymentCard = paymentCard;
                         paymentCard.setExpiryDate(newPaymentCard.getExpiryDate());
                         if(paymentCard.getAddress() != null && newPaymentCard.getAddress() != null) {
