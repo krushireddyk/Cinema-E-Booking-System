@@ -57,7 +57,7 @@ public class BookingService {
 
     @Transactional
     public Booking submitOrder(Booking booking) throws Exception {
-        if(booking.getIsPaymentCardNew() == 1) {
+        if(booking.isPaymentCardNew()) {
             User existingUser = editProfileService.getUser(booking.getUser().getUserName());
             Set<PaymentCard> paymentCards = existingUser.getPaymentCards();
             PaymentCard newPaymentCard = booking.getPaymentCard();

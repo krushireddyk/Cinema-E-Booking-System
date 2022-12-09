@@ -58,7 +58,7 @@ public class Booking {
     private RStatus rStatus;
 
     @Transient
-    private Integer isPaymentCardNew = 0;
+    private Boolean paymentCardNew = false;
 
     public Integer getBookingID() {
         return this.bookingID;
@@ -157,14 +157,16 @@ public class Booking {
         this.rStatus = rStatus;
     }
 
-
-    public Integer getIsPaymentCardNew() {
-        return this.isPaymentCardNew;
+    public Boolean isPaymentCardNew() {
+        return this.paymentCardNew;
     }
 
-    public void setIsPaymentCardNew(Integer isPaymentCardNew) {
-        this.isPaymentCardNew = isPaymentCardNew;
+    public Boolean getPaymentCardNew() {
+        return this.paymentCardNew;
     }
 
+    public void setPaymentCardNew(Boolean paymentCardNew) {
+        this.paymentCardNew = paymentCardNew;
+    }
 
 }
