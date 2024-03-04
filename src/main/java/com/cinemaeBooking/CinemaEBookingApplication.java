@@ -14,10 +14,4 @@ public class CinemaEBookingApplication {
 		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 		SpringApplication.run(CinemaEBookingApplication.class, args);
 	}
-
-	/*@PostConstruct
-    public void init(){
-      TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-    }*/
-
 }

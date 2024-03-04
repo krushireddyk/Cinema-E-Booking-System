@@ -54,9 +54,11 @@ public class BookingController {
     }
 
     @RequestMapping(value = "/orderHistory/{userName}", method = RequestMethod.GET)
-    public ResponseEntity<?> orderHistory(@PathVariable String userName) {
+    public ResponseEntity<?> orderHistory(@PathVariable String userName)
+    {
         List<Booking> bookingList = new ArrayList<Booking>();
-        try {
+        try
+        {
             bookingList = bookingDetails.findAllBookingsByUserName(userName);
             if(bookingList.isEmpty()) {
                 RStatus status = new RStatus();
